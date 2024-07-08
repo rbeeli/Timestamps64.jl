@@ -1,15 +1,10 @@
-module Timestamp64Tests
+module Timestamps64Tests
 
 using Test
 using Dates
-using Timestamp64
+using Timestamps64
 
-include("constructor.jl")
-include("accessors.jl")
-include("conversion.jl")
-include("print.jl")
-
-include("constructor.jl")
+include("construction.jl")
 include("accessors.jl")
 include("operations.jl")
 include("conversion.jl")

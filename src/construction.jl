@@ -1,33 +1,33 @@
 import Dates
 import Base.Libc
 
-const Base.zero(::Type{Timestamp}) = Timestamp(0)
+const Base.zero(::Type{Timestamp64}) = Timestamp64(0)
 
 """
-Timestamp(dt::Dates.DateTime)
+Timestamp64(dt::Dates.DateTime)
 
-Create a `Timestamp` object from a `Dates.DateTime`.
+Create a `Timestamp64` object from a `Dates.DateTime`.
 """
-function Timestamp(dt::Dates.DateTime)
+function Timestamp64(dt::Dates.DateTime)
     # Dates.value(dt) returns the number of milliseconds since 0001-01-01T00:00:00
-    Timestamp((Dates.value(dt) - Dates.UNIXEPOCH) * 1_000_000)
+    Timestamp64((Dates.value(dt) - Dates.UNIXEPOCH) * 1_000_000)
 end
 
 """
-Timestamp(dt::Dates.DateTime)
+Timestamp64(dt::Dates.DateTime)
 
-Create a `Timestamp` object from a `Dates.Date`.
+Create a `Timestamp64` object from a `Dates.Date`.
 """
-function Timestamp(dt::Dates.Date)
-    Timestamp(Dates.year(dt), Dates.month(dt), Dates.day(dt))
+function Timestamp64(dt::Dates.Date)
+    Timestamp64(Dates.year(dt), Dates.month(dt), Dates.day(dt))
 end
 
 """
-    Timestamp(year::Int, month::Int, day::Int)
+    Timestamp64(year::Int, month::Int, day::Int)
 
-Create a `Timestamp` object from date components.
+Create a `Timestamp64` object from date components.
 """
-function Timestamp(year::Int, month::Int, day::Int)
+function Timestamp64(year::Int, month::Int, day::Int)
     nss = 1_000_000_000
 
     # Adjust the year and month for the algorithm
@@ -51,15 +51,15 @@ function Timestamp(year::Int, month::Int, day::Int)
     # Calculate the time in nanoseconds
     time = (z - 719468) * 86_400 * nss
 
-    Timestamp(time)
+    Timestamp64(time)
 end
 
 """
-    Timestamp(year::Int, month::Int, day::Int)
+    Timestamp64(year::Int, month::Int, day::Int)
 
-Create a `Timestamp` object from date and time components.
+Create a `Timestamp64` object from date and time components.
 """
-function Timestamp(year::Int, month::Int, day::Int, hours::Int, minutes::Int=0, seconds::Int=0, nanoseconds::Int=0)
+function Timestamp64(year::Int, month::Int, day::Int, hours::Int, minutes::Int=0, seconds::Int=0, nanoseconds::Int=0)
     nss = 1_000_000_000
 
     # Adjust the year and month for the algorithm
@@ -83,43 +83,43 @@ function Timestamp(year::Int, month::Int, day::Int, hours::Int, minutes::Int=0, 
     # Calculate the time in nanoseconds
     time = (z - 719468) * 86_400 * nss + hours * 3_600 * nss + minutes * 60 * nss + seconds * nss + nanoseconds
 
-    Timestamp(time)
+    Timestamp64(time)
 end
 
 """
-    Timestamp(iso8601::AbstractString)
+    Timestamp64(iso8601::AbstractString)
 
-Create a `Timestamp` object from an ISO 8601 string with nanoseconds precision.
+Create a `Timestamp64` object from an ISO 8601 string with nanoseconds precision.
 
 # Examples
 
 ```julia
-julia> Timestamp("2021-01-01T00:00:01")
+julia> Timestamp64("2021-01-01T00:00:01")
 "2021-01-01T00:00:01.000000000"
 
-julia> Timestamp("2021-01-01T00:00:01Z")
+julia> Timestamp64("2021-01-01T00:00:01Z")
 "2021-01-01T00:00:01.000000000"
 
-julia> Timestamp("2021-01-01T00:00:00.001")
+julia> Timestamp64("2021-01-01T00:00:00.001")
 "2021-01-01T00:00:00.001000000"
 
-julia> Timestamp("2021-01-01T00:00:00.001Z")
+julia> Timestamp64("2021-01-01T00:00:00.001Z")
 "2021-01-01T00:00:00.001000000"
 
-julia> Timestamp("2021-01-01T00:00:00.000001")
+julia> Timestamp64("2021-01-01T00:00:00.000001")
 "2021-01-01T00:00:00.000001000"
 
-julia> Timestamp("2021-01-01T00:00:00.000001Z")
+julia> Timestamp64("2021-01-01T00:00:00.000001Z")
 "2021-01-01T00:00:00.000001000"
 
-julia> Timestamp("2021-01-01T00:00:00.000000001")
+julia> Timestamp64("2021-01-01T00:00:00.000000001")
 "2021-01-01T00:00:00.000000001"
 
-julia> Timestamp("2021-01-01T00:00:00.000000001Z")
+julia> Timestamp64("2021-01-01T00:00:00.000000001Z")
 "2021-01-01T00:00:00.000000001"
 ```
 """
-function Timestamp(iso8601::T) where {T<:AbstractString}
+function Timestamp64(iso8601::T) where {T<:AbstractString}
     year = parse(Int, iso8601[1:4])
     month = parse(Int, iso8601[6:7])
     day = parse(Int, iso8601[9:10])
@@ -140,24 +140,24 @@ function Timestamp(iso8601::T) where {T<:AbstractString}
             nanoseconds = parse(Int, iso8601[21:endindex])
         end
     end
-    Timestamp(year, month, day, hours, minutes, seconds, nanoseconds)
+    Timestamp64(year, month, day, hours, minutes, seconds, nanoseconds)
 end
 
 """
-Returns the current time as a `Timestamp` object with microseconds precision.
+Returns the current time as a `Timestamp64` object with microseconds precision.
 """
-function timestamp_now()
+function Dates.now(::Type{Timestamp64})
     tv = Libc.TimeVal()
     tm = Libc.TmStruct(tv.sec)
-    Timestamp(tm.year + 1900, tm.month + 1, Int(tm.mday), Int(tm.hour), Int(tm.min), Int(tm.sec), tv.usec * 1_000)
+    Timestamp64(tm.year + 1900, tm.month + 1, Int(tm.mday), Int(tm.hour), Int(tm.min), Int(tm.sec), tv.usec * 1_000)
 end
 
 """
-Returns the current date as a `Timestamp` object with microseconds precision.
+Returns the current date as a `Timestamp64` object with microseconds precision.
 The time part is set to `00:00:00.000000`.
 """
-function timestamp_today()
+function Dates.today(::Type{Timestamp64})
     tv = Libc.TimeVal()
     tm = Libc.TmStruct(tv.sec)
-    Timestamp(tm.year + 1900, tm.month + 1, Int(tm.mday))
+    Timestamp64(tm.year + 1900, tm.month + 1, Int(tm.mday))
 end

@@ -1,22 +1,22 @@
 import Dates
 
 """
-    Dates.DateTime(t::Timestamp)
+    Dates.DateTime(timestamp::Timestamp)
 
-Convert a `Timestamp` to a `DateTime`.
+Convert a `Timestamp64` to a `DateTime`.
 Note that `DateTime` only has millisecond precision.
 """
-function Dates.DateTime(timestamp::Timestamp)
+function Dates.DateTime(timestamp::Timestamp64)
     seconds, nanoseconds = divrem(timestamp.ts, 1_000_000_000)
     Dates.unix2datetime(seconds) + Dates.Nanosecond(nanoseconds)
 end
 
 """
-    Dates.Date(t::Timestamp)
+    Dates.Date(timestamp::Timestamp)
 
-Convert a `Timestamp` to a `Date`, discarding the time part.
+Convert a `Timestamp64` to a `Date`, discarding the time part.
 """
-function Dates.Date(timestamp::Timestamp)
+function Dates.Date(timestamp::Timestamp64)
     time = timestamp.ts
     nss = 1_000_000_000
     z = time ÷ (86_400 * nss) + 719468
@@ -33,11 +33,11 @@ function Dates.Date(timestamp::Timestamp)
 end
 
 """
-    Dates.Time(t::Timestamp)
+    Dates.Time(timestamp::Timestamp)
 
-Convert a `Timestamp` to a `Time`, discarding the date part.
+Convert a `Timestamp64` to a `Time`, discarding the date part.
 """
-function Dates.Time(timestamp::Timestamp)
+function Dates.Time(timestamp::Timestamp64)
     time = timestamp.ts
     nss = 1_000_000_000
     hour = (time ÷ (3_600 * nss)) % 24

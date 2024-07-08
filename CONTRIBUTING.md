@@ -4,8 +4,7 @@ Pull requests and issues are welcome.
 
 ## TODOs
 
-- Implement `Dates.days`
-- Implement ranges for `Timestamp`
+- Implement ranges for `Timestamp64`
 - Better docs
 
 

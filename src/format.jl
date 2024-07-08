@@ -4,7 +4,7 @@
 # end
 
 """
-    iso8601(timestamp::Timestamp)
+    iso8601(timestamp::Timestamp64)
 
 Return a string representing the timestamp in ISO 8601 format.
 
@@ -17,7 +17,7 @@ julia> using Timestamps
 
 ```
 """
-function iso8601(timestamp::Timestamp)
+function iso8601(timestamp::Timestamp64)
     time = timestamp.ts
     out = "0000-00-00T00:00:00.000000000"
     ptr = pointer(out)
@@ -59,7 +59,7 @@ function iso8601(timestamp::Timestamp)
 end
 
 ## Does the same, but is slower
-# function iso8601(timestamp::Timestamp)
+# function iso8601(timestamp::Timestamp64)
 #     time = timestamp.ts
 #     nss = 1_000_000_000
 #     # mn = 1_000_000

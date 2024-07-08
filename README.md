@@ -1,33 +1,33 @@
-# Timestamp64.jl
+# Timestamps64.jl
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 ![Maintenance](https://img.shields.io/maintenance/yes/2024)
 
-This package provides an efficient `Timestamp` type with nanosecond precision.
+This package provides an efficient `Timestamp64` type with nanosecond precision.
 It is a wrapper around a single `Int64` value (8 bytes) that represents the number of nanoseconds since the UNIX epoch.
 
-`Timestamp` can store values ranging from `1970-01-01T00:00:00.000000000` to `2262-04-11 23:47:16.854775807`, which should be sufficient for most applications.
+`Timestamp64` can store values ranging from `1970-01-01T00:00:00.000000000` to `2262-04-11 23:47:16.854775807`, which should be sufficient for most applications.
 
 The reason this packages was created is that the built-in `Dates.DateTime` type in Julia is not able to represent nanosecond precision.
 The `Dates.DateTime` type has millisecond precision, which is insufficient for some specialized applications.
 
-This package works with Julia's built-in `Dates` module with methods to convert between `Timestamp` and `DateTime`, `Date` and `Time` types.
+This package works with Julia's built-in `Dates` module with methods to convert between `Timestamp64` and `DateTime`, `Date` and `Time` types.
 Furthermore, the common accessor functions for year, month, day, hour, minute, second, millisecond, microsecond, and nanosecond, among others, are provided.
 
 ## Examples
 
 ```julia
-using Timestamp64
+using Timestamps64
 using Dates
 
 # Create a timestamp
-ts = Timestamp(2021, 12, 31, 23, 58, 59, 123456789) # last parameter is nanoseconds
+ts = Timestamp64(2021, 12, 31, 23, 58, 59, 123456789) # last parameter is nanoseconds
 
 # Current timestamp (microsecond precision)
-timestamp_now()
+now(Timestamp64)
 
 # Today's timestamp (at midnight)
-timestamp_today()
+today(Timestamp64)
 
 # Convert to DateTime (only with millisecond precision)
 dt = DateTime(ts)
@@ -38,8 +38,8 @@ Date(ts)
 # Convert to Time
 Time(ts)
 
-# Convert DateTime back to Timestamp (only with millisecond precision)
-Timestamp(dt)
+# Convert DateTime back to Timestamp64 (only with millisecond precision)
+Timestamp64(dt)
 
 # Convert to string (ISO 8601 by default)
 string(ts)
@@ -51,14 +51,14 @@ println(ts)
 println(iso8601(ts))
 
 # Convert from various ISO 8601 string formats
-Timestamp("2021-01-01T00:00:01")
-Timestamp("2021-01-01T00:00:01Z")
-Timestamp("2021-01-01T00:00:00.001")
-Timestamp("2021-01-01T00:00:00.001Z")
-Timestamp("2021-01-01T00:00:00.000001")
-Timestamp("2021-01-01T00:00:00.000001Z")
-Timestamp("2021-01-01T00:00:00.000000001")
-Timestamp("2021-01-01T00:00:00.000000001Z")
+Timestamp64("2021-01-01T00:00:01")
+Timestamp64("2021-01-01T00:00:01Z")
+Timestamp64("2021-01-01T00:00:00.001")
+Timestamp64("2021-01-01T00:00:00.001Z")
+Timestamp64("2021-01-01T00:00:00.000001")
+Timestamp64("2021-01-01T00:00:00.000001Z")
+Timestamp64("2021-01-01T00:00:00.000000001")
+Timestamp64("2021-01-01T00:00:00.000000001Z")
 
 # Accessor functions
 year(ts)
@@ -71,21 +71,28 @@ nanosecond(ts)
 millisecond(ts)
 microsecond(ts)
 nanosecond(ts)
+yearmonth(ts)
+yearmonthday(ts)
 
-# UNIX epoch in nanoseconds
+## UNIX timestamp conversions
+
+# create from UNIX timestamp in nanoseconds
+Timestamp64(1704412800000000000)
+
+# get UNIX timestamp in nanoseconds
 Dates.value(ts)
 unix_nanos(ts)
 unix(Nanosecond, ts)
 
-# UNIX epoch in microseconds
+# get UNIX timestamp in microseconds
 unix_micros(ts)
 unix(Microsecond, ts)
 
-# UNIX epoch in milliseconds
+# get UNIX timestamp in milliseconds
 unix_millis(ts)
 unix(Millisecond, ts)
 
-# UNIX epoch in seconds
+# get UNIX timestamp in seconds
 unix_secs(ts)
 unix(Second, ts)
 
@@ -101,8 +108,8 @@ ts2 = ts - Microsecond(1)
 ts2 - ts
 
 # Difference of two timestamps
-ts1 = Timestamp(2022, 12, 31, 23, 58, 59)
-ts2 = Timestamp(2023, 1, 1, 23, 58, 59)
+ts1 = Timestamp64(2022, 12, 31, 23, 58, 59)
+ts2 = Timestamp64(2023, 1, 1, 23, 58, 59)
 ts2 - ts1
 Day(ts2 - ts1)
 

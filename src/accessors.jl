@@ -1,12 +1,15 @@
 import Dates
 
-@inline Dates.value(timestamp::Timestamp) = timestamp.ts
+"""
+Returns the number of nanoseconds since the UNIX epoch.
+This is the raw value stored in the `Timestamp64` struct.
+"""
+@inline Dates.value(timestamp::Timestamp64) = timestamp.ts
 
-@inline function Dates.days(timestamp::Timestamp)
-    timestamp.ts ÷ (86_400 * 1_000_000_000)
-end
-
-@inline function Dates.year(timestamp::Timestamp)
+"""
+Returns the year as an integer.
+"""
+@inline function Dates.year(timestamp::Timestamp64)
     time = timestamp.ts
     nss = 1_000_000_000
     z = time ÷ (86_400 * nss) + 719468
@@ -21,7 +24,10 @@ end
     year
 end
 
-@inline function Dates.month(timestamp::Timestamp)
+"""
+Returns the month of the year as an integer.
+"""
+@inline function Dates.month(timestamp::Timestamp64)
     time = timestamp.ts
     nss = 1_000_000_000
     z = time ÷ (86_400 * nss) + 719468
@@ -34,7 +40,10 @@ end
     month
 end
 
-@inline function Dates.day(timestamp::Timestamp)
+"""
+Returns the day of the month as an integer.
+"""
+@inline function Dates.day(timestamp::Timestamp64)
     time = timestamp.ts
     nss = 1_000_000_000
     z = time ÷ (86_400 * nss) + 719468
@@ -47,36 +56,103 @@ end
     day
 end
 
-@inline function Dates.hour(timestamp::Timestamp)
+"""
+Returns the number of days since the beginning of the
+current era (January 1, year 0) as an integer.
+"""
+@inline function Dates.days(timestamp::Timestamp64)
+    # Number of days between Jan 1, year 0 and Unix epoch (Jan 1, 1970)
+    days_before_unix_epoch = 719_163
+    
+    # Convert nanoseconds to days since Unix epoch
+    days_since_unix = timestamp.ts ÷ (1_000_000_000 * 60 * 60 * 24)
+    
+    # Return the number of days since the beginning of the current era
+    days_before_unix_epoch + days_since_unix
+end
+
+"""
+Returns the hour of the day as an integer.
+"""
+@inline function Dates.hour(timestamp::Timestamp64)
     (timestamp.ts ÷ (3_600 * 1_000_000_000)) % 24
 end
 
-@inline function Dates.minute(timestamp::Timestamp)
+"""
+Returns the minute of the hour as an integer.
+"""
+@inline function Dates.minute(timestamp::Timestamp64)
     (timestamp.ts ÷ (60 * 1_000_000_000)) % 60
 end
 
-@inline function Dates.second(timestamp::Timestamp)
+"""
+Returns the second of the minute as an integer.
+"""
+@inline function Dates.second(timestamp::Timestamp64)
     (timestamp.ts ÷ 1_000_000_000) % 60
 end
 
-@inline function Dates.millisecond(timestamp::Timestamp)
+"""
+Returns the millisecond part of the `Timestamp64` as an integer.
+Microseconds and nanoseconds are truncated.
+"""
+@inline function Dates.millisecond(timestamp::Timestamp64)
     (timestamp.ts % 1_000_000_000) ÷ 1_000_000
 end
 
-@inline function Dates.microsecond(timestamp::Timestamp)
+"""
+Returns the microsecond part of the `Timestamp64` as an integer.
+Nanoseconds are truncated.
+"""
+@inline function Dates.microsecond(timestamp::Timestamp64)
     (timestamp.ts % 1_000_000_000) ÷ 1_000
 end
 
-@inline function Dates.nanosecond(timestamp::Timestamp)
+"""
+Returns the nanosecond part of the `Timestamp64` as an integer.
+"""
+@inline function Dates.nanosecond(timestamp::Timestamp64)
     (timestamp.ts % 1_000_000_000)
 end
 
-@inline unix_nanos(timestamp::Timestamp) = timestamp.ts
-@inline unix_micros(timestamp::Timestamp) = timestamp.ts ÷ 1_000
-@inline unix_millis(timestamp::Timestamp) = timestamp.ts ÷ 1_000_000
-@inline unix_secs(timestamp::Timestamp) = timestamp.ts ÷ 1_000_000_000
+"""
+Returns the UNIX timestamp in nanoseconds.
+This is an efficient operation since it uses the raw value stored in the `Timestamp64` struct.
+"""
+@inline unix_nanos(timestamp::Timestamp64) = timestamp.ts
 
-@inline unix(::Type{Dates.Nanosecond}, timestamp::Timestamp) = unix_nanos(timestamp)
-@inline unix(::Type{Dates.Microsecond}, timestamp::Timestamp) = unix_micros(timestamp)
-@inline unix(::Type{Dates.Millisecond}, timestamp::Timestamp) = unix_millis(timestamp)
-@inline unix(::Type{Dates.Second}, timestamp::Timestamp) = unix_secs(timestamp)
+"""
+Returns the UNIX timestamp in microseconds.
+"""
+@inline unix_micros(timestamp::Timestamp64) = timestamp.ts ÷ 1_000
+
+"""
+Returns the UNIX timestamp in milliseconds.
+"""
+@inline unix_millis(timestamp::Timestamp64) = timestamp.ts ÷ 1_000_000
+
+"""
+Returns the UNIX timestamp in seconds.
+"""
+@inline unix_secs(timestamp::Timestamp64) = timestamp.ts ÷ 1_000_000_000
+
+"""
+Returns the UNIX timestamp in nanoseconds.
+This is an efficient operation since it uses the raw value stored in the `Timestamp64` struct.
+"""
+@inline unix(::Type{Dates.Nanosecond}, timestamp::Timestamp64) = unix_nanos(timestamp)
+
+"""
+Returns the UNIX timestamp in microseconds.
+"""
+@inline unix(::Type{Dates.Microsecond}, timestamp::Timestamp64) = unix_micros(timestamp)
+
+"""
+Returns the UNIX timestamp in milliseconds.
+"""
+@inline unix(::Type{Dates.Millisecond}, timestamp::Timestamp64) = unix_millis(timestamp)
+
+"""
+Returns the UNIX timestamp in seconds.
+"""
+@inline unix(::Type{Dates.Second}, timestamp::Timestamp64) = unix_secs(timestamp)

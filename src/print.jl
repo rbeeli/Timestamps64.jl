@@ -1,9 +1,9 @@
 """
-    show(io::IO, t::Timestamp)
+    show(io::IO, timestamp::Timestamp)
 
-Print a `Timestamp` to the given `IO` stream as an ISO 8601 string.
+Print a `Timestamp64` to the given `IO` stream as an ISO 8601 string.
 See function `iso8601` for implementation details.
 """
-function Base.show(io::IO, t::Timestamp)
-    print(io, iso8601(t))
+function Base.show(io::IO, timestamp::Timestamp64)
+    print(io, iso8601(timestamp))
 end

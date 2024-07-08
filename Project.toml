@@ -1,4 +1,4 @@
-name = "Timestamp64"
+name = "Timestamps64"
 uuid = "bb4eac3f-01a0-4c2b-bd7e-ee6d71616039"
 authors = ["Rino Beeli <40661605+rbeeli@users.noreply.github.com>"]
 version = "0.1.0"

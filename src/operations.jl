@@ -2,25 +2,25 @@ import Base: +, -, isless
 import Dates
 
 """
-Add a `Period` to a `Timestamp`.
+Add a `Period` to a `Timestamp64`.
 """
-@inline function +(timestamp::Timestamp, period::Dates.Period)
-    Timestamp(timestamp.ts + Dates.Nanosecond(period).value)
+@inline function +(timestamp::Timestamp64, period::Dates.Period)
+    Timestamp64(timestamp.ts + Dates.Nanosecond(period).value)
 end
 
 """
-Subtract a `Period` from a `Timestamp`.
+Subtract a `Period` from a `Timestamp64`.
 """
-@inline function -(timestamp::Timestamp, period::Dates.Period)
-    Timestamp(timestamp.ts - Dates.Nanosecond(period).value)
+@inline function -(timestamp::Timestamp64, period::Dates.Period)
+    Timestamp64(timestamp.ts - Dates.Nanosecond(period).value)
 end
 
 """
-Subtract two `Timestamp`s to get a `Period`.
+Subtract two `Timestamp64`s to get a `Period`.
 """
-@inline -(t1::Timestamp, t2::Timestamp) = Dates.Nanosecond(t1.ts - t2.ts)
+@inline -(t1::Timestamp64, t2::Timestamp64) = Dates.Nanosecond(t1.ts - t2.ts)
 
 """
-Compare two `Timestamp`s whether the first is less than the second (earlier in time).
+Compare two `Timestamp64`s whether the first is less than the second (earlier in time).
 """
-@inline isless(t1::Timestamp, t2::Timestamp) = t1.ts < t2.ts
+@inline isless(t1::Timestamp64, t2::Timestamp64) = t1.ts < t2.ts
