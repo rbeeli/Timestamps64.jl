@@ -5,63 +5,63 @@ using Timestamps64
 @testset verbose = true "Accessors" begin
 
     @testset "Dates.year" begin
-        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+        for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test year(ts) == year(dt)
         end
     end
 
     @testset "Dates.month" begin
-        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+        for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test month(ts) == month(dt)
         end
     end
 
     @testset "Dates.day" begin
-        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+        for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test day(ts) == day(dt)
         end
     end
 
     @testset "Dates.days" begin
-        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+        for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test Dates.days(ts) == Dates.days(dt)
         end
     end
 
     @testset "Dates.yearmonth" begin
-        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+        for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test yearmonth(ts) == yearmonth(dt)
         end
     end
 
     @testset "Dates.yearmonthday" begin
-        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+        for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test yearmonthday(ts) == yearmonthday(dt)
         end
     end
 
     @testset "Dates.monthday" begin
-        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+        for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test monthday(ts) == monthday(dt)
         end
     end
 
     @testset "Dates.isleapyear" begin
-        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+        for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test isleapyear(ts) == isleapyear(dt)
         end
     end
 
     @testset "Dates.dayofweek" begin
-        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+        for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test dayofweek(ts) == dayofweek(dt)
         end
@@ -93,28 +93,28 @@ using Timestamps64
     end
 
     @testset "Dates.nanosecond" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789)
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
         @test nanosecond(ts) == 789
     end
 
     @testset "unix_nanos" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789)
-        @test unix_nanos(ts) == Dates.value(ts)
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
+        @test unix_nanos(ts) == trunc(Int64, datetime2unix(DateTime(ts)) * 1_000^3) + 789
     end
 
     @testset "unix_micros" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789)
-        @test unix_micros(ts) == Dates.value(ts) ÷ 1_000
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
+        @test unix_micros(ts) == trunc(Int64, datetime2unix(DateTime(ts)) * 1_000^2)
     end
 
     @testset "unix_millis" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789)
-        @test unix_millis(ts) == Dates.value(ts) ÷ 1_000_000
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
+        @test unix_millis(ts) == trunc(Int64, datetime2unix(DateTime(ts)) * 1_000)
     end
 
     @testset "unix_secs" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789)
-        @test unix_secs(ts) == Dates.value(ts) ÷ 1_000_000_000
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
+        @test unix_secs(ts) == trunc(Int64, datetime2unix(DateTime(ts)))
     end
 
 end
