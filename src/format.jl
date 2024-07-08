@@ -1,7 +1,39 @@
-# # Formatting
-# function Dates.format(t::Timestamp, fmt::Dates.DateFormat)
-#     Dates.format(Dates.DateTime(t), fmt)
-# end
+import Dates
+
+"""
+    ISOTimestamp64Format
+
+Describes the ISO 8601 formatting for a `Timestamp64`.
+This is the default value for `Dates.format` of a `Timestamp64`.
+
+# Example
+```jldoctest
+julia> Dates.format(Timestamp64(2018, 8, 8, 12, 0, 43, 1), ISOTimestamp64Format)
+"2018-08-08T12:00:43.000000001"
+```
+"""
+const ISOTimestamp64Format = Dates.DateFormat("yyyy-mm-dd\\THH:MM:SS.fffffffff")
+Dates.default_format(::Type{Timestamp64}) = ISOTimestamp64Format
+
+"""
+    Dates.format(t::Timestamp, ::typeof(ISOTimestamp64Format)
+
+Return a string representing the timestamp in ISO 8601 format
+with nanosecond precision.
+"""
+function Dates.format(timestamp::Timestamp64, ::typeof(ISOTimestamp64Format))
+    iso8601(timestamp)
+end
+
+"""
+    Dates.format(t::Timestamp, ::typeof(Dates.ISODateTimeFormat)
+
+Return a string representing the timestamp in ISO 8601 format
+with nanosecond precision.
+"""
+function Dates.format(timestamp::Timestamp64, ::typeof(Dates.ISODateTimeFormat))
+    iso8601(timestamp)
+end
 
 """
     iso8601(timestamp::Timestamp64)

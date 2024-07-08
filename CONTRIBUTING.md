@@ -4,7 +4,7 @@ Pull requests and issues are welcome.
 
 ## TODOs
 
-- Implement ranges for `Timestamp64`
+- Support more dynamic formatting, not just 9 digits precision ISO 8601
 - Better docs
 
 

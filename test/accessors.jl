@@ -2,7 +2,7 @@ using Test
 using Dates
 using Timestamps64
 
-@testset verbose = true "Dates accessors" begin
+@testset verbose = true "Accessors" begin
 
     @testset "Dates.year" begin
         for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
@@ -43,6 +43,27 @@ using Timestamps64
         for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
             @test yearmonthday(ts) == yearmonthday(dt)
+        end
+    end
+
+    @testset "Dates.monthday" begin
+        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+            ts = Timestamp64(dt)
+            @test monthday(ts) == monthday(dt)
+        end
+    end
+
+    @testset "Dates.isleapyear" begin
+        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+            ts = Timestamp64(dt)
+            @test isleapyear(ts) == isleapyear(dt)
+        end
+    end
+
+    @testset "Dates.dayofweek" begin
+        for dt in DateTime(1970,1,1):Day(1):DateTime(2262, 4, 11)
+            ts = Timestamp64(dt)
+            @test dayofweek(ts) == dayofweek(dt)
         end
     end
 

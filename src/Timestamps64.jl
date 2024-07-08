@@ -22,7 +22,9 @@ include("construction.jl")
 include("accessors.jl")
 include("operations.jl")
 include("conversion.jl")
+include("ranges.jl")
 include("format.jl")
+include("parse.jl")
 include("print.jl")
 
 # export all

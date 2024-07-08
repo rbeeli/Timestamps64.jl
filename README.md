@@ -41,15 +41,6 @@ Time(ts)
 # Convert DateTime back to Timestamp64 (only with millisecond precision)
 Timestamp64(dt)
 
-# Convert to string (ISO 8601 by default)
-string(ts)
-
-# Print string (ISO 8601 by default)
-println(ts)
-
-# Convert to ISO 8601 string
-println(iso8601(ts))
-
 # Convert from various ISO 8601 string formats
 Timestamp64("2021-01-01T00:00:01")
 Timestamp64("2021-01-01T00:00:01Z")
@@ -59,6 +50,12 @@ Timestamp64("2021-01-01T00:00:00.000001")
 Timestamp64("2021-01-01T00:00:00.000001Z")
 Timestamp64("2021-01-01T00:00:00.000000001")
 Timestamp64("2021-01-01T00:00:00.000000001Z")
+
+# Base.parse is also supported (only ISO 8601 format with up to nanosecond precision)
+parse(Timestamp64, "2021-01-01T00:00:00.000000001Z", Dates.ISODateTimeFormat)
+parse(Timestamp64, "2021-01-01T00:00:00")
+parse(Timestamp64, "2021-01-01T00:00:00.001")
+parse(Timestamp64, "2021-01-01T00:00:00.000000001Z", ISOTimestamp64Format)
 
 # Accessor functions
 year(ts)
@@ -73,6 +70,26 @@ microsecond(ts)
 nanosecond(ts)
 yearmonth(ts)
 yearmonthday(ts)
+monthday(ts)
+monthname(ts)
+isleapyear(ts)
+dayofweek(ts)
+
+## String conversions
+
+# Convert to string (ISO 8601 default)
+string(ts)
+
+# Convert to ISO 8601 string explicitly
+iso8601(ts)
+
+# Print string (ISO 8601 default)
+println(ts)
+
+# Dates.format is also supported
+Dates.format(ts, Dates.ISODateTimeFormat)
+Dates.format(ts, ISOTimestamp64Format)
+
 
 ## UNIX timestamp conversions
 
@@ -117,4 +134,12 @@ Day(ts2 - ts1)
 ts1 < ts2
 ts1 > ts2
 ts1 == ts2
+
+## Ranges
+# Note that `Month` and `Year` are not supported in ranges due to their variable length
+
+# Create a range of timestamps using arbitrary periods
+Timestamp64(2020, 1, 1):Day(1):Timestamp64(2020, 1, 10) # 10 days
+
+collect(Timestamp64(2020, 1, 1):Day(1):Timestamp64(2020, 1, 10))
 ```

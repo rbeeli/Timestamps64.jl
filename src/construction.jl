@@ -87,63 +87,6 @@ function Timestamp64(year::Int, month::Int, day::Int, hours::Int, minutes::Int=0
 end
 
 """
-    Timestamp64(iso8601::AbstractString)
-
-Create a `Timestamp64` object from an ISO 8601 string with nanoseconds precision.
-
-# Examples
-
-```julia
-julia> Timestamp64("2021-01-01T00:00:01")
-"2021-01-01T00:00:01.000000000"
-
-julia> Timestamp64("2021-01-01T00:00:01Z")
-"2021-01-01T00:00:01.000000000"
-
-julia> Timestamp64("2021-01-01T00:00:00.001")
-"2021-01-01T00:00:00.001000000"
-
-julia> Timestamp64("2021-01-01T00:00:00.001Z")
-"2021-01-01T00:00:00.001000000"
-
-julia> Timestamp64("2021-01-01T00:00:00.000001")
-"2021-01-01T00:00:00.000001000"
-
-julia> Timestamp64("2021-01-01T00:00:00.000001Z")
-"2021-01-01T00:00:00.000001000"
-
-julia> Timestamp64("2021-01-01T00:00:00.000000001")
-"2021-01-01T00:00:00.000000001"
-
-julia> Timestamp64("2021-01-01T00:00:00.000000001Z")
-"2021-01-01T00:00:00.000000001"
-```
-"""
-function Timestamp64(iso8601::T) where {T<:AbstractString}
-    year = parse(Int, iso8601[1:4])
-    month = parse(Int, iso8601[6:7])
-    day = parse(Int, iso8601[9:10])
-    hours = parse(Int, iso8601[12:13])
-    minutes = parse(Int, iso8601[15:16])
-    seconds = parse(Int, iso8601[18:19])
-    nanoseconds = 0
-    if length(iso8601) > 20
-        endindex = length(iso8601)
-        if iso8601[endindex] == 'Z'
-            endindex -= 1
-        end
-        if endindex == 23 # milliseconds
-            nanoseconds = parse(Int, iso8601[21:endindex])*1_000_000
-        elseif endindex == 26#  microseconds
-            nanoseconds = parse(Int, iso8601[21:endindex])*1_000
-        else # nanoseconds
-            nanoseconds = parse(Int, iso8601[21:endindex])
-        end
-    end
-    Timestamp64(year, month, day, hours, minutes, seconds, nanoseconds)
-end
-
-"""
 Returns the current time as a `Timestamp64` object with microseconds precision.
 """
 function Dates.now(::Type{Timestamp64})

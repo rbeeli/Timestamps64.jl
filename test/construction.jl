@@ -2,7 +2,7 @@ using Test
 using Dates
 using Timestamps64
 
-@testset verbose = true "Constructor" begin
+@testset verbose = true "Construction" begin
 
     @testset "zero(Timestamp64)" begin
         @test zero(Timestamp64) == Timestamp64(0)
@@ -83,58 +83,6 @@ using Timestamps64
             @test minute(ts) == 34
             @test second(ts) == 56
         end
-    end
-
-    @testset "Timestamp64(\"2021-01-01T00:00:01\")" begin
-        ts = Timestamp64("2021-01-01T00:00:01")
-        @test ts == Timestamp64(2021, 1, 1, 0, 0, 1)
-    end
-
-    @testset "Timestamp64(\"2021-01-01T00:00:01Z\")" begin
-        ts = Timestamp64("2021-01-01T00:00:01Z")
-        @test ts == Timestamp64(2021, 1, 1, 0, 0, 1)
-    end
-
-    @testset "Timestamp64(\"2021-01-01T00:00:00.001\")" begin
-        ts = Timestamp64("2021-01-01T00:00:00.001")
-        @test ts == Timestamp64(2021, 1, 1, 0, 0, 0, 1_000_000)
-    end
-
-    @testset "Timestamp64(\"2021-01-01T00:00:00.001Z\")" begin
-        ts = Timestamp64("2021-01-01T00:00:00.001Z")
-        @test ts == Timestamp64(2021, 1, 1, 0, 0, 0, 1_000_000)
-    end
-
-    @testset "Timestamp64(\"2021-01-01T00:00:00.000001\")" begin
-        ts = Timestamp64("2021-01-01T00:00:00.000001")
-        @test ts == Timestamp64(2021, 1, 1, 0, 0, 0, 1_000)
-    end
-
-    @testset "Timestamp64(\"2021-01-01T00:00:00.000001Z\")" begin
-        ts = Timestamp64("2021-01-01T00:00:00.000001Z")
-        @test ts == Timestamp64(2021, 1, 1, 0, 0, 0, 1_000)
-    end
-
-    @testset "Timestamp64(\"2021-01-01T00:00:00.000000001\")" begin
-        ts = Timestamp64("2021-01-01T00:00:00.000000001")
-        @test ts == Timestamp64(2021, 1, 1, 0, 0, 0, 1)
-    end
-
-    @testset "Timestamp64(\"2021-01-01T00:00:00.000000001Z\")" begin
-        ts = Timestamp64("2021-01-01T00:00:00.000000001Z")
-        @test ts == Timestamp64(2021, 1, 1, 0, 0, 0, 1)
-    end
-
-    @testset "Timestamp64(\"2021-02-03T04:05:06.789123456\")" begin
-        ts = Timestamp64("2021-02-03T04:05:06.789123456")
-        @test DateTime(ts) == DateTime(2021, 2, 3, 4, 5, 6, 789)
-        @test ts == Timestamp64(2021, 2, 3, 4, 5, 6, 789123456)
-    end
-
-    @testset "Timestamp64(\"2021-02-03T04:05:06.789123456Z\")" begin
-        ts = Timestamp64("2021-02-03T04:05:06.789123456Z")
-        @test DateTime(ts) == DateTime(2021, 2, 3, 4, 5, 6, 789)
-        @test ts == Timestamp64(2021, 2, 3, 4, 5, 6, 789123456)
     end
 
     @testset "now(Timestamp64)" begin
