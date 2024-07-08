@@ -6,12 +6,13 @@
 This package provides an efficient `Timestamp` type with nanosecond precision.
 It is a wrapper around a single `Int64` value (8 bytes) that represents the number of nanoseconds since the UNIX epoch.
 
-The representable range of `Timestamp` is from `1970-01-01T00:00:00.000000000` to `2262-04-11 23:47:16.854775807`, which should be enough for most applications.
+`Timestamp` can store values ranging from `1970-01-01T00:00:00.000000000` to `2262-04-11 23:47:16.854775807`, which should be sufficient for most applications.
 
 The reason this packages was created is that the built-in `Dates.DateTime` type in Julia is not able to represent nanosecond precision.
-The `Dates.DateTime` type has millisecond precision, which is not enough for some specialized applications.
+The `Dates.DateTime` type has millisecond precision, which is insufficient for some specialized applications.
 
-This package works with Julia's built-in `Dates` module with methods to convert between `Timestamp` and `DateTime`, `Date` and `Time` types, incl. the common accessor functions for year, month, day, hour, minute, second, millisecond, microsecond, and nanosecond.
+This package works with Julia's built-in `Dates` module with methods to convert between `Timestamp` and `DateTime`, `Date` and `Time` types.
+Furthermore, the common accessor functions for year, month, day, hour, minute, second, millisecond, microsecond, and nanosecond, among others, are provided.
 
 ## Examples
 
