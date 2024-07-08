@@ -8,13 +8,13 @@ It is a wrapper around a single `Int64` value (8 bytes) that represents the numb
 
 `Timestamp64` can store values ranging from `1970-01-01T00:00:00.000000000` to `2262-04-11 23:47:16.854775807`, which should be sufficient for most applications.
 
-The reason this packages was created is that the built-in `Dates.DateTime` type in Julia is not able to represent nanosecond precision.
+The reason this package was created is that the built-in `Dates.DateTime` type in Julia is not able to represent nanosecond precision.
 The `Dates.DateTime` type has millisecond precision, which is insufficient for some specialized applications.
 
-This package works with Julia's built-in `Dates` module with methods to convert between `Timestamp64` and `DateTime`, `Date` and `Time` types.
+This package works with Julia's built-in `Dates` module, providing methods to convert between `Timestamp64` and `DateTime`, `Date`, and `Time` types.
 Furthermore, the common accessor functions for year, month, day, hour, minute, second, millisecond, microsecond, and nanosecond, among others, are provided.
 
-## Examples
+## API documentation
 
 ```julia
 using Timestamps64
@@ -136,7 +136,8 @@ ts1 > ts2
 ts1 == ts2
 
 ## Ranges
-# Note that `Month` and `Year` are not supported in ranges due to their variable length
+
+# Note that ranges with periods `Month` and `Year` are not supported due to their variable length.
 
 # Create a range of timestamps using arbitrary periods
 Timestamp64(2020, 1, 1):Day(1):Timestamp64(2020, 1, 10) # 10 days
@@ -222,6 +223,7 @@ dt = DateTime(2021, 1, 1, 0, 0, 1) + Millisecond(123)
 @btime Dates.format($ts, ISOTimestamp64Format);
 @btime Dates.format($dt, Dates.ISODateTimeFormat);
 ```
+
 **Result**
 
 The `Timestamp64` type is more than **6 times faster** at formatting to a ISO 8601 string compared to Julia's built-in `DateTime` type, and with fewer allocations!
@@ -315,4 +317,54 @@ julia> @btime unix_millis($ts);
 
 julia> @btime trunc(Int64, datetime2unix($dt)*1000);
   4.420 ns (0 allocations: 0 bytes)
+```
+
+### Create from UNIX timestamp in milliseconds
+
+```julia
+using BenchmarkTools
+using Timestamps64
+using Dates
+
+unix_millis = 1609459201000; # 2021-01-01T00:00:01.000000000
+
+@btime Timestamp64($unix_millis * 1_000_000);
+@btime unix2datetime($unix_millis / 1000);
+```
+
+**Result**
+
+The `Timestamp64` type is **3.3 times faster** at creating a timestamp from a UNIX timestamp in milliseconds compared to Julia's built-in `DateTime` type! This is partly due to the additional division operation required for the `DateTime` type.
+
+```console
+julia> @btime Timestamp64($unix_millis * 1_000_000);
+  1.378 ns (0 allocations: 0 bytes)
+
+julia> @btime unix2datetime($unix_millis / 1000);
+  4.507 ns (0 allocations: 0 bytes)
+```
+
+### Create from UNIX timestamp in seconds
+
+```julia
+using BenchmarkTools
+using Timestamps64
+using Dates
+
+unix_secs = 1609459201; # 2021-01-01T00:00:01.000000000
+
+@btime Timestamp64($unix_secs * 1_000_000_000);
+@btime unix2datetime($unix_secs);
+```
+
+**Result**
+
+Almost identical performance for both `Timestamp64` and `DateTime` types.
+
+```console
+julia> @btime Timestamp64($unix_secs * 1_000_000_000);
+  1.539 ns (0 allocations: 0 bytes)
+
+julia> @btime unix2datetime($unix_secs);
+  1.570 ns (0 allocations: 0 bytes)
 ```
