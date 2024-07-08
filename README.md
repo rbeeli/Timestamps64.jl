@@ -44,12 +44,12 @@ Timestamp64(dt)
 # Convert from various ISO 8601 string formats
 Timestamp64("2021-01-01T00:00:01")
 Timestamp64("2021-01-01T00:00:01Z")
-Timestamp64("2021-01-01T00:00:00.001")
-Timestamp64("2021-01-01T00:00:00.001Z")
-Timestamp64("2021-01-01T00:00:00.000001")
-Timestamp64("2021-01-01T00:00:00.000001Z")
-Timestamp64("2021-01-01T00:00:00.000000001")
-Timestamp64("2021-01-01T00:00:00.000000001Z")
+Timestamp64("2021-01-01T00:00:00.001") # 1 millisecond
+Timestamp64("2021-01-01T00:00:00.001Z") # 1 millisecond
+Timestamp64("2021-01-01T00:00:00.000001") # 1 microsecond
+Timestamp64("2021-01-01T00:00:00.000001Z") # 1 microsecond
+Timestamp64("2021-01-01T00:00:00.000000001") # 1 nanosecond
+Timestamp64("2021-01-01T00:00:00.000000001Z") # 1 nanosecond
 
 # Base.parse is also supported (only ISO 8601 format with up to nanosecond precision)
 parse(Timestamp64, "2021-01-01T00:00:00.000000001Z", Dates.ISODateTimeFormat)
