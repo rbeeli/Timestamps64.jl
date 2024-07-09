@@ -14,6 +14,8 @@ The `Dates.DateTime` type has millisecond precision, which is insufficient for s
 This package works with Julia's built-in `Dates` module, providing methods to convert between `Timestamp64` and `DateTime`, `Date`, and `Time` types.
 Furthermore, the common accessor functions for year, month, day, hour, minute, second, millisecond, microsecond, and nanosecond, among others, are provided.
 
+Every function is unit-tested, usually against the corresponding `Dates` function, to ensure correctness.
+
 ## API documentation
 
 ```julia
