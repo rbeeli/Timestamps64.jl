@@ -149,8 +149,8 @@ collect(Timestamp64(2020, 1, 1):Day(1):Timestamp64(2020, 1, 10))
 
 ## Performance
 
-The `Timestamp64` type is very efficient and has a small memory footprint, only 8 bytes.
-Common operations such as creating, converting, and comparing timestamps have been optimized and are as fast as Julia's built-in `DateTime` type implementation, or even faster.
+The `Timestamp64` implementation is very efficient and has a small memory footprint with only 8 bytes.
+Common operations such as creating, parsing, converting, and formatting timestamps have been optimized and are as fast as Julia's built-in `DateTime` implementation, or even faster.
 
 The following benchmark results have been obtained on an Intel(R) Core(TM) i9-12900K CPU on Ubuntu 22.04 using Julia 1.10.4.
 
