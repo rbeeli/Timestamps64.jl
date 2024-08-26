@@ -1,17 +1,17 @@
-import Base: +, -, isless
+import Base: +, -
 import Dates: hour, minute, second, nanosecond, yearmonthday, daysinmonth, yearwrap, monthwrap
 
 """
 Add a `Period` to a `Timestamp64`.
 """
-@inline function +(timestamp::Timestamp64, period::Dates.FixedPeriod)
+@inline function (+)(timestamp::Timestamp64, period::Dates.FixedPeriod)
     Timestamp64(timestamp.ts + Dates.Nanosecond(period).value)
 end
 
 """
 Subtract a `Period` from a `Timestamp64`.
 """
-@inline function -(timestamp::Timestamp64, period::Dates.FixedPeriod)
+@inline function (-)(timestamp::Timestamp64, period::Dates.FixedPeriod)
     Timestamp64(timestamp.ts - Dates.Nanosecond(period).value)
 end
 
@@ -45,11 +45,6 @@ end
 @inline (-)(ts::Timestamp64, y::Dates.Quarter) = ts - Dates.Month(y)
 
 """
-Subtract two `Timestamp64`s to get a `Period`.
+Subtract two `Timestamp64` to get a `Period`.
 """
-@inline -(t1::Timestamp64, t2::Timestamp64) = Dates.Nanosecond(t1.ts - t2.ts)
-
-"""
-Compare two `Timestamp64`s whether the first is less than the second (earlier in time).
-"""
-@inline isless(t1::Timestamp64, t2::Timestamp64) = t1.ts < t2.ts
+@inline (-)(t1::Timestamp64, t2::Timestamp64) = Dates.Nanosecond(t1.ts - t2.ts)

@@ -1,7 +1,7 @@
 name = "Timestamps64"
 uuid = "bb4eac3f-01a0-4c2b-bd7e-ee6d71616039"
 authors = ["Rino Beeli <40661605+rbeeli@users.noreply.github.com>"]
-version = "0.2.0"
+version = "0.2.1"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"

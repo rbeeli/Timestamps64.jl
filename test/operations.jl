@@ -66,11 +66,4 @@ using Timestamps64
         @test ts2 - ts1 == Nanosecond(Day(1))
     end
 
-    @testset "isless" begin
-        ts1 = Timestamp64(2020, 1, 1)
-        ts2 = Timestamp64(2020, 1, 2)
-        @test isless(ts1, ts2)
-        @test ts1 < ts2
-    end
-
 end

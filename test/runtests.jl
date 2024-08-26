@@ -1,9 +1,6 @@
 module Timestamps64Tests
 
-using Test
-using Dates
-using Timestamps64
-
+include("types.jl")
 include("construction.jl")
 include("accessors.jl")
 include("operations.jl")

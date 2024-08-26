@@ -1,36 +1,6 @@
 import Dates
 import Base.Libc
 
-const Base.zero(::Type{Timestamp64}) = Timestamp64(0)
-
-"""
-Timestamp64(dt::Dates.DateTime)
-
-Create a `Timestamp64` object from a `Dates.DateTime`.
-"""
-@inline function Timestamp64(dt::Dates.DateTime)
-    # Dates.value(dt) returns the number of milliseconds since 0001-01-01T00:00:00
-    Timestamp64((Dates.value(dt) - Dates.UNIXEPOCH) * 1_000_000)
-end
-
-"""
-Timestamp64(dt::Dates.DateTime)
-
-Create a `Timestamp64` object from a `Dates.Date`.
-"""
-@inline function Timestamp64(dt::Dates.Date)
-    Timestamp64(Dates.year(dt), Dates.month(dt), Dates.day(dt))
-end
-
-"""
-Timestamp64(date::Dates.Date, time::Dates.Time)
-
-Create a `Timestamp64` object from a `Dates.Date` and a `Dates.Time`.
-"""
-@inline function Timestamp64(date::Dates.Date, time::Dates.Time)
-    Timestamp64(Dates.year(date), Dates.month(date), Dates.day(date), 0, 0, 0, Dates.value(time))
-end
-
 """
     Timestamp64(year::Int, month::Int, day::Int)
 

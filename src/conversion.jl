@@ -46,3 +46,44 @@ function Dates.Time(timestamp::Timestamp64)
     ns = time % nss
     Dates.Time(hour, mins, secs) + Dates.Nanosecond(ns)
 end
+
+"""
+Timestamp64(dt::Dates.DateTime)
+
+Create a `Timestamp64` object from a `Dates.DateTime`.
+"""
+@inline function Timestamp64(dt::Dates.DateTime)
+    # Dates.value(dt) returns the number of milliseconds since 0001-01-01T00:00:00
+    Timestamp64((Dates.value(dt) - Dates.UNIXEPOCH) * 1_000_000)
+end
+
+"""
+Timestamp64(dt::Dates.DateTime)
+
+Create a `Timestamp64` object from a `Dates.Date`.
+"""
+@inline function Timestamp64(dt::Dates.Date)
+    Timestamp64(Dates.year(dt), Dates.month(dt), Dates.day(dt))
+end
+
+"""
+Timestamp64(date::Dates.Date, time::Dates.Time)
+
+Create a `Timestamp64` object from a `Dates.Date` and a `Dates.Time`.
+"""
+@inline function Timestamp64(date::Dates.Date, time::Dates.Time)
+    Timestamp64(Dates.year(date), Dates.month(date), Dates.day(date), 0, 0, 0, Dates.value(time))
+end
+
+# Date, Time, DateTime <-> Timestamp64 conversions
+Base.convert(::Type{Timestamp64}, dt::Dates.DateTime) = Timestamp64(dt)
+Base.convert(::Type{Timestamp64}, dt::Dates.Date) = Timestamp64(dt)
+Base.convert(::Type{Dates.Date}, ts::Timestamp64) = Dates.Date(ts)
+Base.convert(::Type{Dates.Time}, ts::Timestamp64) = Dates.Time(ts)
+Base.convert(::Type{Dates.DateTime}, ts::Timestamp64) = Dates.DateTime(ts)
+
+# Date-Timestamp64 promotion
+Base.promote_rule(::Type{Dates.Date}, x::Type{Timestamp64}) = Timestamp64
+
+# DateTime-Timestamp64 promotion
+Base.promote_rule(::Type{Dates.DateTime}, x::Type{Timestamp64}) = Timestamp64

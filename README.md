@@ -34,21 +34,6 @@ now(Timestamp64, UTC)
 # Today's timestamp (at midnight)
 today(Timestamp64)
 
-# Convert to DateTime, which only has millisecond precision
-dt = DateTime(ts)
-
-# Convert to Date
-Date(ts)
-
-# Convert to Time
-Time(ts)
-
-# Create from DateTime (only with millisecond precision)
-Timestamp64(dt)
-
-# Create from Date and Time (nanosecond precision)
-Timestamp64(Date(2021, 12, 31), Time(23, 58, 59) + Nanosecond(123456789))
-
 # Convert from various ISO 8601 string formats
 Timestamp64("2021-01-01T00:00:01")
 Timestamp64("2021-01-01T00:00:01Z")
@@ -65,7 +50,30 @@ parse(Timestamp64, "2021-01-01T00:00:00")
 parse(Timestamp64, "2021-01-01T00:00:00.001")
 parse(Timestamp64, "2021-01-01T00:00:00.000000001Z", ISOTimestamp64Format)
 
-# Accessor functions
+
+## Dates conversion
+
+# Convert to DateTime, which only has millisecond precision
+DateTime(ts)
+convert(DateTime, ts)
+
+# Convert to Date
+Date(ts)
+convert(Date, ts)
+
+# Convert to Time
+Time(ts)
+convert(Time, ts)
+
+# Create from DateTime (only with millisecond precision)
+dt = now()
+Timestamp64(dt)
+
+# Create from Date and Time (nanosecond precision)
+Timestamp64(Date(2021, 12, 31), Time(23, 58, 59, 123, 456, 789))
+
+
+## Accessor functions
 year(ts)
 month(ts)
 day(ts)
@@ -82,6 +90,8 @@ monthday(ts)
 monthname(ts)
 isleapyear(ts)
 dayofweek(ts)
+typemin(Timestamp64)
+typemax(Timestamp64)
 
 
 ## String conversions
@@ -143,6 +153,10 @@ Day(ts2 - ts1)
 ts1 < ts2
 ts1 > ts2
 ts1 == ts2
+
+# Automatic type promotion
+Timestamp64(2020, 1, 1) < DateTime(2020, 1, 2)
+Timestamp64(2020, 1, 1) < Date(2020, 1, 2)
 
 
 ## Rounding

@@ -4,10 +4,6 @@ using Timestamps64
 
 @testset verbose = true "Construction" begin
 
-    @testset "zero(Timestamp64)" begin
-        @test zero(Timestamp64) == Timestamp64(0)
-    end
-
     @testset "DateTime(1970, 1, 1, 0, 0, 0)" begin
         dt = DateTime(1970, 1, 1, 0, 0, 0)
         ts = Timestamp64(dt)
