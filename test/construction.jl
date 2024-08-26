@@ -88,7 +88,13 @@ using Timestamps64
     @testset "now(Timestamp64)" begin
         ts = now(Timestamp64)
         dt = Dates.now()
-        @test dt - DateTime(ts) < Millisecond(10)
+        @test dt - DateTime(ts) < Millisecond(5)
+    end
+
+    @testset "now(Timestamp64, UTC)" begin
+        ts = now(Timestamp64, UTC)
+        dt = Dates.now(UTC)
+        @test dt - DateTime(ts) < Millisecond(5)
     end
 
     @testset "today(Timestamp64)" begin

@@ -8,7 +8,7 @@ Timestamp64(dt::Dates.DateTime)
 
 Create a `Timestamp64` object from a `Dates.DateTime`.
 """
-function Timestamp64(dt::Dates.DateTime)
+@inline function Timestamp64(dt::Dates.DateTime)
     # Dates.value(dt) returns the number of milliseconds since 0001-01-01T00:00:00
     Timestamp64((Dates.value(dt) - Dates.UNIXEPOCH) * 1_000_000)
 end
@@ -18,7 +18,7 @@ Timestamp64(dt::Dates.DateTime)
 
 Create a `Timestamp64` object from a `Dates.Date`.
 """
-function Timestamp64(dt::Dates.Date)
+@inline function Timestamp64(dt::Dates.Date)
     Timestamp64(Dates.year(dt), Dates.month(dt), Dates.day(dt))
 end
 
@@ -87,19 +87,28 @@ function Timestamp64(year::Int, month::Int, day::Int, hours::Int, minutes::Int=0
 end
 
 """
-Returns the current time as a `Timestamp64` object with microseconds precision.
+Returns the current time as a `Timestamp64` object with microseconds precision
+and UTC timezone.
 """
-function Dates.now(::Type{Timestamp64})
+@inline function Dates.now(::Type{Timestamp64})
     tv = Libc.TimeVal()
     tm = Libc.TmStruct(tv.sec)
     Timestamp64(tm.year + 1900, tm.month + 1, Int(tm.mday), Int(tm.hour), Int(tm.min), Int(tm.sec), tv.usec * 1_000)
 end
 
 """
+Returns the current time as a `Timestamp64` object with microseconds precision
+and UTC timezone.
+"""
+@inline function Dates.now(::Type{Timestamp64}, ::Type{Dates.UTC})
+    Dates.now(Timestamp64)
+end
+
+"""
 Returns the current date as a `Timestamp64` object with microseconds precision.
 The time part is set to `00:00:00.000000`.
 """
-function Dates.today(::Type{Timestamp64})
+@inline function Dates.today(::Type{Timestamp64})
     tv = Libc.TimeVal()
     tm = Libc.TmStruct(tv.sec)
     Timestamp64(tm.year + 1900, tm.month + 1, Int(tm.mday))
