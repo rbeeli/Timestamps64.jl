@@ -6,9 +6,7 @@ Pull requests and issues are welcome.
 
 - Support more dynamic formatting, not just 9 digits precision ISO 8601
 - Support Dates.ISODateFormat, Dates.ISOTimeFormat
-- Check Base.round/ceil/floor support
 - Check Base.trunc support
-- Constructor from Dates.Date and Dates.Time
 - Create docs site, also on GitHub pages
 
 

@@ -43,8 +43,11 @@ Date(ts)
 # Convert to Time
 Time(ts)
 
-# Convert DateTime back to Timestamp64 (only with millisecond precision)
+# Create from DateTime (only with millisecond precision)
 Timestamp64(dt)
+
+# Create from Date and Time (nanosecond precision)
+Timestamp64(Date(2021, 12, 31), Time(23, 58, 59) + Nanosecond(123456789))
 
 # Convert from various ISO 8601 string formats
 Timestamp64("2021-01-01T00:00:01")

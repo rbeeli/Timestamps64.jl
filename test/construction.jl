@@ -44,6 +44,12 @@ using Timestamps64
         @test DateTime(ts) == dt
     end
 
+    @testset "from Date and Time" begin
+        date = Date(2020, 1, 1)
+        time = Time(23, 24, 35) + Nanosecond(123456789)
+        @test Timestamp64(date, time) == Timestamp64(2020, 1, 1, 23, 24, 35, 123456789)
+    end
+
     @testset "Timestamp64(0)" begin
         ts = Timestamp64(0)
         @test DateTime(ts) == DateTime(1970, 1, 1, 0, 0, 0)

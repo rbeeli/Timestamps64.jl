@@ -23,6 +23,15 @@ Create a `Timestamp64` object from a `Dates.Date`.
 end
 
 """
+Timestamp64(date::Dates.Date, time::Dates.Time)
+
+Create a `Timestamp64` object from a `Dates.Date` and a `Dates.Time`.
+"""
+@inline function Timestamp64(date::Dates.Date, time::Dates.Time)
+    Timestamp64(Dates.year(date), Dates.month(date), Dates.day(date), 0, 0, 0, Dates.value(time))
+end
+
+"""
     Timestamp64(year::Int, month::Int, day::Int)
 
 Create a `Timestamp64` object from date components.
