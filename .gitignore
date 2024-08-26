@@ -25,3 +25,4 @@ docs/src/examples/gen/
 Manifest.toml
 
 .vscode/
+test/rounding

@@ -16,6 +16,8 @@ Furthermore, the common accessor functions for year, month, day, hour, minute, s
 
 Every function is unit-tested, usually against the corresponding `Dates` function, to ensure correctness.
 
+Note: Due to a different origin epoch (`1970-01-01T00:00:00.000000000` in `Timestamp64` vs. `0000-01-01T00:00:00` in `DateTime`), the rounding of `Timestamp64` with time periods smaller than `Day(1)` is not identical to the rounding of `DateTime`. This implementation corresponds to C++ `chrono` rounding behavior.
+
 ## API documentation
 
 ```julia
@@ -25,13 +27,14 @@ using Dates
 # Create a timestamp
 ts = Timestamp64(2021, 12, 31, 23, 58, 59, 123456789) # last parameter is nanoseconds
 
-# Current timestamp (microsecond precision)
+# Current UTC timestamp (microsecond precision)
 now(Timestamp64)
+now(Timestamp64, UTC)
 
 # Today's timestamp (at midnight)
 today(Timestamp64)
 
-# Convert to DateTime (only with millisecond precision)
+# Convert to DateTime, which only has millisecond precision
 dt = DateTime(ts)
 
 # Convert to Date
@@ -76,6 +79,7 @@ monthday(ts)
 monthname(ts)
 isleapyear(ts)
 dayofweek(ts)
+
 
 ## String conversions
 
@@ -137,14 +141,54 @@ ts1 < ts2
 ts1 > ts2
 ts1 == ts2
 
+
+## Rounding
+
+# Floor to nearest period value
+floor(ts, Nanosecond(5))
+floor(ts, Microsecond(5))
+floor(ts, Millisecond(5))
+floor(ts, Second(5))
+floor(ts, Minute(5))
+floor(ts, Hour(5))
+floor(ts, Day(5))
+floor(ts, Month(5))
+floor(ts, Quarter(5))
+floor(ts, Year(5))
+
+# Ceil to nearest period
+ceil(ts, Nanosecond(5))
+ceil(ts, Microsecond(5))
+ceil(ts, Millisecond(5))
+ceil(ts, Second(5))
+ceil(ts, Minute(5))
+ceil(ts, Hour(5))
+ceil(ts, Day(5))
+ceil(ts, Month(5))
+ceil(ts, Quarter(5))
+ceil(ts, Year(5))
+
+# Round to nearest period
+round(ts, Nanosecond(5))
+round(ts, Microsecond(5))
+round(ts, Millisecond(5))
+round(ts, Second(5))
+round(ts, Minute(5))
+round(ts, Hour(5))
+round(ts, Day(5))
+round(ts, Month(5))
+round(ts, Quarter(5))
+round(ts, Year(5))
+
+
 ## Ranges
 
-# Note that ranges with periods `Month` and `Year` are not supported due to their variable length.
-
 # Create a range of timestamps using arbitrary periods
-Timestamp64(2020, 1, 1):Day(1):Timestamp64(2020, 1, 10) # 10 days
-
 collect(Timestamp64(2020, 1, 1):Day(1):Timestamp64(2020, 1, 10))
+collect(Timestamp64(2020, 1, 1):Week(1):Timestamp64(2020, 1, 31))
+collect(Timestamp64(2020, 1, 1):Month(1):Timestamp64(2020, 12, 31))
+collect(Timestamp64(2020, 1, 1):Quarter(1):Timestamp64(2020, 12, 31))
+collect(Timestamp64(2020, 1, 1):Year(1):Timestamp64(2022, 1, 1))
 ```
 
 ## Performance
