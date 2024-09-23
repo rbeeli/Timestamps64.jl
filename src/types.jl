@@ -25,6 +25,8 @@ which is 1 nanosecond.
 
 @inline Base.zero(::Type{Timestamp64}) = Timestamp64(0)
 
+@inline Base.iszero(t::Timestamp64) = t.ts == 0
+
 @inline Base.typemin(::Union{Timestamp64, Type{Timestamp64}}) = Timestamp64(0)
 @inline Base.typemax(::Union{Timestamp64, Type{Timestamp64}}) = Timestamp64(typemax(Int64))
 

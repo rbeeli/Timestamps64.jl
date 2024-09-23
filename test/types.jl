@@ -8,6 +8,12 @@ using Timestamps64
         @test zero(Timestamp64) == Timestamp64(0)
     end
 
+    @testset "iszero" begin
+        @test iszero(zero(Timestamp64))
+        @test iszero(Timestamp64(0))
+        @test iszero(typemin(Timestamp64))
+    end
+
     @testset "isless" begin
         ts1 = Timestamp64(2020, 1, 1)
         ts2 = Timestamp64(2020, 1, 2)

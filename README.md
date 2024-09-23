@@ -90,8 +90,6 @@ monthday(ts)
 monthname(ts)
 isleapyear(ts)
 dayofweek(ts)
-typemin(Timestamp64)
-typemax(Timestamp64)
 
 
 ## String conversions
@@ -110,29 +108,6 @@ Dates.format(ts, Dates.ISODateTimeFormat)
 Dates.format(ts, ISOTimestamp64Format)
 
 
-## UNIX timestamp conversions
-
-# create from UNIX timestamp in nanoseconds
-Timestamp64(1704412800000000000)
-
-# get UNIX timestamp in nanoseconds
-Dates.value(ts)
-unix_nanos(ts)
-unix(Nanosecond, ts)
-
-# get UNIX timestamp in microseconds
-unix_micros(ts)
-unix(Microsecond, ts)
-
-# get UNIX timestamp in milliseconds
-unix_millis(ts)
-unix(Millisecond, ts)
-
-# get UNIX timestamp in seconds
-unix_secs(ts)
-unix(Second, ts)
-
-
 ## Arithmetics
 
 # Add period
@@ -148,6 +123,16 @@ ts1 = Timestamp64(2022, 12, 31, 23, 58, 59)
 ts2 = Timestamp64(2023, 1, 1, 23, 58, 59)
 ts2 - ts1
 Day(ts2 - ts1)
+
+
+## Numeric operations
+
+# Type constants
+eps(Timestamp64)
+zero(Timestamp64)
+iszero(Timestamp64(0))
+typemin(Timestamp64)
+typemax(Timestamp64)
 
 # Compare timestamps
 ts1 < ts2
@@ -206,6 +191,29 @@ collect(Timestamp64(2020, 1, 1):Week(1):Timestamp64(2020, 1, 31))
 collect(Timestamp64(2020, 1, 1):Month(1):Timestamp64(2020, 12, 31))
 collect(Timestamp64(2020, 1, 1):Quarter(1):Timestamp64(2020, 12, 31))
 collect(Timestamp64(2020, 1, 1):Year(1):Timestamp64(2022, 1, 1))
+
+
+## UNIX timestamp conversions
+
+# create from UNIX timestamp in nanoseconds
+Timestamp64(1704412800000000000)
+
+# get UNIX timestamp in nanoseconds
+Dates.value(ts)
+unix_nanos(ts)
+unix(Nanosecond, ts)
+
+# get UNIX timestamp in microseconds
+unix_micros(ts)
+unix(Microsecond, ts)
+
+# get UNIX timestamp in milliseconds
+unix_millis(ts)
+unix(Millisecond, ts)
+
+# get UNIX timestamp in seconds
+unix_secs(ts)
+unix(Second, ts)
 ```
 
 ## Performance
