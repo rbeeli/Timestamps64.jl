@@ -1,6 +1,11 @@
 module Timestamps64
 
+@static if Base.Sys.WORD_SIZE != 64
+    error("Timestamps64.jl only supports 64-bit systems")
+end
+
 include("types.jl")
+include("interop.jl")
 include("construction.jl")
 include("accessors.jl")
 include("operations.jl")

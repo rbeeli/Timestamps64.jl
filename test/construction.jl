@@ -89,7 +89,7 @@ using Timestamps64
 
     @testset "now(Timestamp64)" begin
         ts = now(Timestamp64)
-        dt = Dates.now()
+        dt = Dates.now(Dates.UTC)
         @test dt - DateTime(ts) < Millisecond(5)
     end
 

@@ -66,29 +66,27 @@ function Timestamp64(year::Int, month::Int, day::Int, hours::Int, minutes::Int=0
 end
 
 """
-Returns the current time as a `Timestamp64` object with microseconds precision
-and UTC timezone.
+Returns the current time as a `Timestamp64` object with nanoseconds precision and UTC timezone.
 """
 @inline function Dates.now(::Type{Timestamp64})
-    tv = Libc.TimeVal()
-    tm = Libc.TmStruct(tv.sec)
-    Timestamp64(tm.year + 1900, tm.month + 1, Int(tm.mday), Int(tm.hour), Int(tm.min), Int(tm.sec), tv.usec * 1_000)
+    Dates.now(Timestamp64, Dates.UTC)
 end
 
 """
-Returns the current time as a `Timestamp64` object with microseconds precision
-and UTC timezone.
+Returns the current time as a `Timestamp64` object with nanoseconds precision and UTC timezone.
 """
 @inline function Dates.now(::Type{Timestamp64}, ::Type{Dates.UTC})
-    Dates.now(Timestamp64)
+    timespec = _clock_gettime()
+    ts = _to_unix_ns(timespec)
+    Timestamp64(ts)
 end
 
 """
-Returns the current date as a `Timestamp64` object with microseconds precision.
+Returns the current date as a `Timestamp64` object with nanoseconds precision.
 The time part is set to `00:00:00.000000`.
 """
 @inline function Dates.today(::Type{Timestamp64})
-    tv = Libc.TimeVal()
-    tm = Libc.TmStruct(tv.sec)
-    Timestamp64(tm.year + 1900, tm.month + 1, Int(tm.mday))
+    timespec = _clock_gettime()
+    ts = _to_date_ns(timespec)
+    Timestamp64(ts)
 end

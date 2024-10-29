@@ -3,20 +3,40 @@
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 ![Maintenance](https://img.shields.io/maintenance/yes/2024)
 
-This package provides an efficient `Timestamp64` type with nanosecond precision.
-It is a wrapper around a single `Int64` value (8 bytes) that represents the number of nanoseconds since the UNIX epoch.
+This package provides an efficient `Timestamp64` datetime type with nanosecond precision.
+It is a wrapper around a single `Int64` value (8 bytes) that represents the number of nanoseconds since the UNIX epoch. Benchmarks show that common date/time operations are as fast as Julia's built-in `DateTime` type, or even significantly faster in some cases (see below).
 
 `Timestamp64` can store values ranging from `1970-01-01T00:00:00.000000000` to `2262-04-11 23:47:16.854775807`, which should be sufficient for most applications.
-
-The reason this package was created is that the built-in `Dates.DateTime` type in Julia is not able to represent nanosecond precision.
-The `Dates.DateTime` type has millisecond precision, which is insufficient for some specialized applications.
 
 This package works with Julia's built-in `Dates` module, providing methods to convert between `Timestamp64` and `DateTime`, `Date`, and `Time` types.
 Furthermore, the common accessor functions for year, month, day, hour, minute, second, millisecond, microsecond, and nanosecond, among others, are provided.
 
-Every function is unit-tested, usually against the corresponding `Dates` function, to ensure correctness.
+Every function is unit-tested to ensure correctness, usually against the corresponding `Dates` function.
 
-Note: Due to a different origin epoch (`1970-01-01T00:00:00.000000000` in `Timestamp64` vs. `0000-01-01T00:00:00` in `DateTime`), the rounding of `Timestamp64` with time periods smaller than `Day(1)` is not identical to the rounding of `DateTime`. This implementation corresponds to C++ `chrono` rounding behavior.
+> [!NOTE]
+> `Timestamp64`'s `now` methods return the current time in UTC, which is different from `Dates.now()` which returns the current time in the local time zone.
+
+> [!NOTE]
+> Due to a different origin epoch (`1970-01-01T00:00:00.000000000` in `Timestamp64` vs. `0000-01-01T00:00:00` in `DateTime`), the rounding of `Timestamp64` with time periods smaller than `Day(1)` is not identical to the rounding of `DateTime`. This implementation corresponds to C++'s `chrono` rounding behavior.
+
+> [!NOTE]
+> The default precision/unit of the difference of two `Timestamp64` objects is `Nanosecond`, while the default precision/unit of the difference of two `DateTime` objects is `Millisecond`.
+
+## Supported platforms
+
+This package is supported on the following platforms (64-bit only):
+- Linux
+- macOS Sierra 10.12 and later (needs `clock_gettime` support)
+
+Examples of not supported platforms:
+- Any 32-bit system
+- Windows operating systems
+- Older macOS versions before 10.12
+
+## Background
+
+The reason this package was created is that the built-in `Dates.DateTime` type in Julia is not able to represent nanosecond precision.
+The `Dates.DateTime` type has millisecond precision, which is insufficient for some specialized applications.
 
 ## API documentation
 
@@ -27,11 +47,11 @@ using Dates
 # Create a timestamp
 ts = Timestamp64(2021, 12, 31, 23, 58, 59, 123456789) # last parameter is nanoseconds
 
-# Current UTC timestamp (microsecond precision)
+# Current time in UTC with nanosecond precision
 now(Timestamp64)
 now(Timestamp64, UTC)
 
-# Today's timestamp (at midnight)
+# Today's timestamp in UTC (at midnight)
 today(Timestamp64)
 
 # Convert from various ISO 8601 string formats
@@ -223,6 +243,29 @@ Common operations such as creating, parsing, converting, and formatting timestam
 
 The following benchmark results have been obtained on an Intel(R) Core(TM) i9-12900K CPU on Ubuntu 22.04 using Julia 1.10.4.
 
+### Get object with current date/time in UTC
+
+```julia
+using BenchmarkTools
+using Timestamps64
+using Dates
+
+@btime now(Timestamp64, UTC);
+@btime now(UTC);
+```
+
+**Result**
+
+```console
+julia> @btime now(Timestamp64, UTC);
+  11.392 ns (0 allocations: 0 bytes)
+
+julia> @btime now(UTC);
+  22.015 ns (0 allocations: 0 bytes)
+```
+
+The `Timestamp64` type is almost **2 times faster** at getting the current UTC time compared to Julia's built-in `DateTime` type!
+
 ### Construction from date parts
 
 ```julia
@@ -338,7 +381,7 @@ julia> @btime $dt2 - $dt1;
   1.358 ns (0 allocations: 0 bytes)
 ```
 
-### Get UNIX timestamp in seconds
+### Access UNIX timestamp in seconds
 
 ```julia
 using BenchmarkTools
@@ -364,7 +407,7 @@ julia> @btime trunc(Int64, datetime2unix($dt));
   3.654 ns (0 allocations: 0 bytes)
 ```
 
-### Get UNIX timestamp in milliseconds
+### Access UNIX timestamp in milliseconds
 
 ```julia
 using BenchmarkTools
@@ -390,7 +433,7 @@ julia> @btime trunc(Int64, datetime2unix($dt)*1000);
   4.420 ns (0 allocations: 0 bytes)
 ```
 
-### Create from UNIX timestamp in milliseconds
+### Create object from UNIX timestamp in milliseconds
 
 ```julia
 using BenchmarkTools
@@ -415,7 +458,7 @@ julia> @btime unix2datetime($unix_millis / 1000);
   4.507 ns (0 allocations: 0 bytes)
 ```
 
-### Create from UNIX timestamp in seconds
+### Create object from UNIX timestamp in seconds
 
 ```julia
 using BenchmarkTools
