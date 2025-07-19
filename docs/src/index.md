@@ -13,11 +13,13 @@ Furthermore, the common accessor functions for year, month, day, hour, minute, s
 
 Every function is unit-tested to ensure correctness, usually against the corresponding `Dates` function.
 
-> [!NOTE]
-> The default precision/unit of the difference of two `Timestamp64` objects is `Nanosecond`, while the default precision/unit of the difference of two `DateTime` objects is `Millisecond`.
+!!! note "Timestamps64 precision vs. Dates.DateTime"
 
-> [!NOTE]
-> Due to a different origin epoch (`1970-01-01T00:00:00.000000000` in `Timestamp64` vs. `0000-01-01T00:00:00` in `DateTime`), the rounding of `Timestamp64` with time periods smaller than `Day(1)` is not identical to the rounding of `DateTime`. This implementation corresponds to C++'s `chrono` rounding behavior.
+    The default precision/unit of the difference of two `Timestamp64` objects is `Nanosecond`, while the default precision/unit of the difference of two `DateTime` objects is `Millisecond`.
+
+!!! note "Timestamps64 time rounding vs. Dates.DateTime"
+
+    Due to a different origin epoch (`1970-01-01T00:00:00.000000000` in `Timestamp64` vs. `0000-01-01T00:00:00` in `DateTime`), the rounding of `Timestamp64` with time periods smaller than `Day(1)` is not identical to the rounding of `DateTime`. This implementation corresponds to C++'s `chrono` rounding behavior.
 
 ## Supported platforms
 
