@@ -1,23 +1,20 @@
 name: CI
 
 on:
-  pull_request:
   push:
     branches:
       - main
     tags: "*"
-  workflow_dispatch:
-  merge_group:
-
-concurrency:
-  # Skip intermediate builds: always.
-  # Cancel intermediate builds: only if it is a pull request build.
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: ${{ startsWith(github.ref, 'refs/pull/') }}
+  pull_request:
 
 jobs:
   docs:
     name: Documentation
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: read
+      statuses: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
