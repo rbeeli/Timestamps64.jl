@@ -42,7 +42,7 @@ Returns the local time zone offset of a UNIX timestamp in seconds.
 
 https://pubs.opengroup.org/onlinepubs/7908799/xsh/wcsftime.html
 """
-@inline function _local_tz_offset_sec(utc_sec::Int64)::Int64
+function _local_tz_offset_sec(utc_sec::Int64)::Int64
 	tm = TmStruct(utc_sec)
 
 	fmt = "%z"
