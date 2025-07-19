@@ -1,10 +1,6 @@
-import Dates
+using Dates: Dates
 
-@inline function _tryparse_base10_positive(
-    str::AbstractString,
-    i::Int,
-    len::Int
-)::Int
+@inline function _tryparse_base10_positive(str::AbstractString, i::Int, len::Int)::Int
     i > len && return -1
     d::Int = 0
     @inbounds while i <= len
@@ -300,15 +296,16 @@ end
 Parses a datetime string `s` using the ISO 8601 format and returns a `Timestamp64` object
 with microseconds precision.
 """
-function Base.parse(::Type{Timestamp64}, s::AbstractString, df::typeof(Dates.ISODateTimeFormat))
+Base.parse(::Type{Timestamp64}, s::AbstractString, df::typeof(Dates.ISODateTimeFormat)) =
     Timestamp64(s)
-end
 
 """
 Parses a datetime string `s` using the ISO 8601 format and returns a `Timestamp64` object
 with microseconds precision.
 """
-function Base.parse(::Type{Timestamp64}, s::AbstractString, df::Dates.DateFormat=Dates.default_format(Timestamp64))
+function Base.parse(
+    ::Type{Timestamp64}, s::AbstractString, df::Dates.DateFormat=Dates.default_format(Timestamp64)
+)
     if df != Dates.ISODateTimeFormat && df != ISOTimestamp64Format
         throw(ArgumentError("Only ISODateTimeFormat and ISOTimestamp64Format are supported"))
     end

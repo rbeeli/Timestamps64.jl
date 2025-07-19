@@ -1,4 +1,4 @@
-import Dates
+using Dates: Dates
 
 """
 Timestamp object which stores nanoseconds since UNIX epoch.
@@ -16,7 +16,6 @@ struct Timestamp64 <: Dates.AbstractDateTime
     # Timestamp64(ts::Int64) = new(Dates.UTInstant{Dates.Nanosecond}(Dates.Nanosecond(ts)))
 end
 
-
 """
 Return the smallest unit value supported by `Timestamp64`,
 which is 1 nanosecond.
@@ -27,8 +26,8 @@ which is 1 nanosecond.
 
 @inline Base.iszero(t::Timestamp64) = t.ts == 0
 
-@inline Base.typemin(::Union{Timestamp64, Type{Timestamp64}}) = Timestamp64(0)
-@inline Base.typemax(::Union{Timestamp64, Type{Timestamp64}}) = Timestamp64(typemax(Int64))
+@inline Base.typemin(::Union{Timestamp64,Type{Timestamp64}}) = Timestamp64(0)
+@inline Base.typemax(::Union{Timestamp64,Type{Timestamp64}}) = Timestamp64(typemax(Int64))
 
 """
 Compare two `Timestamp64`s whether the first is less than the second (earlier in time).

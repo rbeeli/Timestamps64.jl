@@ -1,4 +1,4 @@
-import Dates
+using Dates: Dates
 
 @inline function Base.floor(timestamp::Timestamp64, p::Dates.TimePeriod)
     nanos = timestamp.ts

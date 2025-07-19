@@ -1,4 +1,4 @@
-import Dates
+using Dates: Dates
 
 """
 Returns the number of nanoseconds since the UNIX epoch.
@@ -63,10 +63,10 @@ current era (January 1, year 0) as an integer.
 @inline function Dates.days(timestamp::Timestamp64)
     # Number of days between Jan 1, year 0 and Unix epoch (Jan 1, 1970)
     days_before_unix_epoch = 719_163
-    
+
     # Convert nanoseconds to days since Unix epoch
     days_since_unix = timestamp.ts ÷ (1_000_000_000 * 60 * 60 * 24)
-    
+
     # Return the number of days since the beginning of the current era
     days_before_unix_epoch + days_since_unix
 end

@@ -4,13 +4,7 @@ module Timestamps64
     error("Timestamps64.jl only supports 64-bit systems")
 end
 
-export Timestamp64,
-       ISOTimestamp64Format,
-       iso8601,
-       unix_nanos,
-       unix_micros,
-       unix_millis,
-       unix_secs
+export Timestamp64, ISOTimestamp64Format, iso8601, unix_nanos, unix_micros, unix_millis, unix_secs
 
 include("types.jl")
 include("interop.jl")
