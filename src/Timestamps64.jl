@@ -4,6 +4,14 @@ module Timestamps64
     error("Timestamps64.jl only supports 64-bit systems")
 end
 
+export Timestamp64,
+       ISOTimestamp64Format,
+       iso8601,
+       unix_nanos,
+       unix_micros,
+       unix_millis,
+       unix_secs
+
 include("types.jl")
 include("interop.jl")
 include("construction.jl")
@@ -15,12 +23,5 @@ include("ranges.jl")
 include("format.jl")
 include("parse.jl")
 include("print.jl")
-
-# export all
-for n in names(@__MODULE__; all=true)
-    if Base.isidentifier(n) && n ∉ (Symbol(@__MODULE__), :eval, :include) && !startswith(string(n), "_")
-        @eval export $n
-    end
-end
 
 end # module Timestamp

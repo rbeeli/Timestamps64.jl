@@ -14,9 +14,6 @@ Furthermore, the common accessor functions for year, month, day, hour, minute, s
 Every function is unit-tested to ensure correctness, usually against the corresponding `Dates` function.
 
 > [!NOTE]
-> `Timestamp64`'s `now` methods return the current time in UTC, which is different from `Dates.now()` which returns the current time in the local time zone.
-
-> [!NOTE]
 > Due to a different origin epoch (`1970-01-01T00:00:00.000000000` in `Timestamp64` vs. `0000-01-01T00:00:00` in `DateTime`), the rounding of `Timestamp64` with time periods smaller than `Day(1)` is not identical to the rounding of `DateTime`. This implementation corresponds to C++'s `chrono` rounding behavior.
 
 > [!NOTE]
@@ -47,12 +44,17 @@ using Dates
 # Create a timestamp
 ts = Timestamp64(2021, 12, 31, 23, 58, 59, 123456789) # last parameter is nanoseconds
 
-# Current time in UTC with nanosecond precision
+# Current timestamp in local time zone with nanosecond precision
 now(Timestamp64)
+
+# Current timestamp in UTC with nanosecond precision
 now(Timestamp64, UTC)
 
-# Today's timestamp in UTC (at midnight)
+# Today's timestamp in local time zone (at midnight)
 today(Timestamp64)
+
+# Today's timestamp in UTC (at midnight)
+today(Timestamp64, UTC)
 
 # Convert from various ISO 8601 string formats
 Timestamp64("2021-01-01T00:00:01")
