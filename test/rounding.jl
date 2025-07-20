@@ -3,119 +3,212 @@ using Dates
 using Timestamps64
 
 @testset verbose = true "Rounding" begin
-
     @testset "floor C++ chrono generated test cases" begin
-        # Original time: Timestamp64(1970, 1, 1, 0, 0, 0, 123456789)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Nanosecond(1)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123456789)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Nanosecond(3)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123456789)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Nanosecond(7)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123456788)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Nanosecond(10)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123456780)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Microsecond(1)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123456000)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Microsecond(3)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123456000)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Microsecond(7)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123452000)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Microsecond(10)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123450000)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Millisecond(1)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123000000)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Millisecond(3)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123000000)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Millisecond(7)) == Timestamp64(1970, 1, 1, 0, 0, 0, 119000000)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Millisecond(10)) == Timestamp64(1970, 1, 1, 0, 0, 0, 120000000)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Second(1)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Second(3)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Second(7)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Second(10)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Minute(1)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Minute(3)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Minute(7)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Minute(10)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Hour(1)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Hour(3)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Hour(7)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Hour(10)) == Timestamp64(1970, 1, 1, 0, 0, 0, 0)
+        # Original time: Timestamp64(1970, 1, 1, 0, 0, 0, nanoseconds=123456789)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(1)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(3)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(7)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456788)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(10)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456780)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Microsecond(1)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456000)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Microsecond(3)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456000)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Microsecond(7)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123452000)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Microsecond(10)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123450000)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Millisecond(1)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123000000)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Millisecond(3)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123000000)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Millisecond(7)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=119000000)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Millisecond(10)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=120000000)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Second(1)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Second(3)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Second(7)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Second(10)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Minute(1)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Minute(3)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Minute(7)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Minute(10)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Hour(1)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Hour(3)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Hour(7)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
+        @test floor(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Hour(10)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0)
 
-        # Original time: Timestamp64(2020, 1, 1, 23, 59, 59, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Nanosecond(1)) == Timestamp64(2020, 1, 1, 23, 59, 59, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Nanosecond(3)) == Timestamp64(2020, 1, 1, 23, 59, 58, 999999998)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Nanosecond(7)) == Timestamp64(2020, 1, 1, 23, 59, 58, 999999999)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Nanosecond(10)) == Timestamp64(2020, 1, 1, 23, 59, 59, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Microsecond(1)) == Timestamp64(2020, 1, 1, 23, 59, 59, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Microsecond(3)) == Timestamp64(2020, 1, 1, 23, 59, 58, 999998000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Microsecond(7)) == Timestamp64(2020, 1, 1, 23, 59, 58, 999994000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Microsecond(10)) == Timestamp64(2020, 1, 1, 23, 59, 59, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Millisecond(1)) == Timestamp64(2020, 1, 1, 23, 59, 59, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Millisecond(3)) == Timestamp64(2020, 1, 1, 23, 59, 58, 998000000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Millisecond(7)) == Timestamp64(2020, 1, 1, 23, 59, 58, 999000000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Millisecond(10)) == Timestamp64(2020, 1, 1, 23, 59, 59, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Second(1)) == Timestamp64(2020, 1, 1, 23, 59, 59, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Second(3)) == Timestamp64(2020, 1, 1, 23, 59, 57, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Second(7)) == Timestamp64(2020, 1, 1, 23, 59, 53, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Second(10)) == Timestamp64(2020, 1, 1, 23, 59, 50, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Minute(1)) == Timestamp64(2020, 1, 1, 23, 59, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Minute(3)) == Timestamp64(2020, 1, 1, 23, 57, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Minute(7)) == Timestamp64(2020, 1, 1, 23, 53, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Minute(10)) == Timestamp64(2020, 1, 1, 23, 50, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Hour(1)) == Timestamp64(2020, 1, 1, 23, 0, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Hour(3)) == Timestamp64(2020, 1, 1, 21, 0, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Hour(7)) == Timestamp64(2020, 1, 1, 17, 0, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 0), Hour(10)) == Timestamp64(2020, 1, 1, 22, 0, 0, 0)
+        # Original time: Timestamp64(2020, 1, 1, 23, 59, 59)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Nanosecond(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=0)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Nanosecond(3)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 58; nanoseconds=999999998)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Nanosecond(7)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 58; nanoseconds=999999999)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Nanosecond(10)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=0)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Microsecond(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=0)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Microsecond(3)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 58; nanoseconds=999998000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Microsecond(7)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 58; nanoseconds=999994000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Microsecond(10)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=0)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Millisecond(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=0)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Millisecond(3)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 58; nanoseconds=998000000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Millisecond(7)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 58; nanoseconds=999000000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Millisecond(10)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Second(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Second(3)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 57)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Second(7)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 53)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Second(10)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 50)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Minute(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Minute(3)) ==
+            Timestamp64(2020, 1, 1, 23, 57)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Minute(7)) ==
+            Timestamp64(2020, 1, 1, 23, 53)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Minute(10)) ==
+            Timestamp64(2020, 1, 1, 23, 50)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Hour(1)) == Timestamp64(2020, 1, 1, 23)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Hour(3)) == Timestamp64(2020, 1, 1, 21)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Hour(7)) == Timestamp64(2020, 1, 1, 17)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59), Hour(10)) == Timestamp64(2020, 1, 1, 22)
 
-        # Original time: Timestamp64(2020, 1, 1, 23, 59, 59, 123456789)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Nanosecond(1)) == Timestamp64(2020, 1, 1, 23, 59, 59, 123456789)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Nanosecond(3)) == Timestamp64(2020, 1, 1, 23, 59, 59, 123456787)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Nanosecond(7)) == Timestamp64(2020, 1, 1, 23, 59, 59, 123456787)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Nanosecond(10)) == Timestamp64(2020, 1, 1, 23, 59, 59, 123456780)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Microsecond(1)) == Timestamp64(2020, 1, 1, 23, 59, 59, 123456000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Microsecond(3)) == Timestamp64(2020, 1, 1, 23, 59, 59, 123454000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Microsecond(7)) == Timestamp64(2020, 1, 1, 23, 59, 59, 123453000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Microsecond(10)) == Timestamp64(2020, 1, 1, 23, 59, 59, 123450000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Millisecond(1)) == Timestamp64(2020, 1, 1, 23, 59, 59, 123000000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Millisecond(3)) == Timestamp64(2020, 1, 1, 23, 59, 59, 121000000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Millisecond(7)) == Timestamp64(2020, 1, 1, 23, 59, 59, 118000000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Millisecond(10)) == Timestamp64(2020, 1, 1, 23, 59, 59, 120000000)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Second(1)) == Timestamp64(2020, 1, 1, 23, 59, 59, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Second(3)) == Timestamp64(2020, 1, 1, 23, 59, 57, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Second(7)) == Timestamp64(2020, 1, 1, 23, 59, 53, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Second(10)) == Timestamp64(2020, 1, 1, 23, 59, 50, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Minute(1)) == Timestamp64(2020, 1, 1, 23, 59, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Minute(3)) == Timestamp64(2020, 1, 1, 23, 57, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Minute(7)) == Timestamp64(2020, 1, 1, 23, 53, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Minute(10)) == Timestamp64(2020, 1, 1, 23, 50, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Hour(1)) == Timestamp64(2020, 1, 1, 23, 0, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Hour(3)) == Timestamp64(2020, 1, 1, 21, 0, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Hour(7)) == Timestamp64(2020, 1, 1, 17, 0, 0, 0)
-        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59, 123456789), Hour(10)) == Timestamp64(2020, 1, 1, 22, 0, 0, 0)
+        # Original time: Timestamp64(2020, 1, 1, 23, 59, 59, nanoseconds=123456789)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Nanosecond(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Nanosecond(3)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456787)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Nanosecond(7)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456787)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Nanosecond(10)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456780)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Microsecond(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Microsecond(3)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123454000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Microsecond(7)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123453000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Microsecond(10)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123450000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Millisecond(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123000000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Millisecond(3)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=121000000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Millisecond(7)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=118000000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Millisecond(10)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=120000000)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Second(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 59)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Second(3)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 57)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Second(7)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 53)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Second(10)) ==
+            Timestamp64(2020, 1, 1, 23, 59, 50)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Minute(1)) ==
+            Timestamp64(2020, 1, 1, 23, 59)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Minute(3)) ==
+            Timestamp64(2020, 1, 1, 23, 57)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Minute(7)) ==
+            Timestamp64(2020, 1, 1, 23, 53)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Minute(10)) ==
+            Timestamp64(2020, 1, 1, 23, 50)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Hour(1)) ==
+            Timestamp64(2020, 1, 1, 23)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Hour(3)) ==
+            Timestamp64(2020, 1, 1, 21)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Hour(7)) ==
+            Timestamp64(2020, 1, 1, 17)
+        @test floor(Timestamp64(2020, 1, 1, 23, 59, 59; nanoseconds=123456789), Hour(10)) ==
+            Timestamp64(2020, 1, 1, 22)
 
-        # Original time: Timestamp64(2030, 1, 1, 0, 0, 0, 123456789)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Nanosecond(1)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123456789)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Nanosecond(3)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123456789)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Nanosecond(7)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123456783)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Nanosecond(10)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123456780)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Microsecond(1)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123456000)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Microsecond(3)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123456000)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Microsecond(7)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123450000)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Microsecond(10)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123450000)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Millisecond(1)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123000000)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Millisecond(3)) == Timestamp64(2030, 1, 1, 0, 0, 0, 123000000)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Millisecond(7)) == Timestamp64(2030, 1, 1, 0, 0, 0, 121000000)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Millisecond(10)) == Timestamp64(2030, 1, 1, 0, 0, 0, 120000000)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Second(1)) == Timestamp64(2030, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Second(3)) == Timestamp64(2030, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Second(7)) == Timestamp64(2029, 12, 31, 23, 59, 58, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Second(10)) == Timestamp64(2030, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Minute(1)) == Timestamp64(2030, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Minute(3)) == Timestamp64(2030, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Minute(7)) == Timestamp64(2029, 12, 31, 23, 56, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Minute(10)) == Timestamp64(2030, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Hour(1)) == Timestamp64(2030, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Hour(3)) == Timestamp64(2030, 1, 1, 0, 0, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Hour(7)) == Timestamp64(2029, 12, 31, 23, 0, 0, 0)
-        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0, 123456789), Hour(10)) == Timestamp64(2030, 1, 1, 0, 0, 0, 0)
+        # Original time: Timestamp64(2030, 1, 1, 0, 0, 0, nanoseconds=123456789)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(1)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(3)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(7)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456783)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(10)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456780)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Microsecond(1)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456000)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Microsecond(3)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456000)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Microsecond(7)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123450000)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Microsecond(10)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123450000)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Millisecond(1)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123000000)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Millisecond(3)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123000000)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Millisecond(7)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=121000000)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Millisecond(10)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=120000000)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Second(1)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Second(3)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Second(7)) ==
+            Timestamp64(2029, 12, 31, 23, 59, 58; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Second(10)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Minute(1)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Minute(3)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Minute(7)) ==
+            Timestamp64(2029, 12, 31, 23, 56, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Minute(10)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Hour(1)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Hour(3)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Hour(7)) ==
+            Timestamp64(2029, 12, 31, 23, 0, 0; nanoseconds=0)
+        @test floor(Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=123456789), Hour(10)) ==
+            Timestamp64(2030, 1, 1, 0, 0, 0; nanoseconds=0)
     end
 
     @testset "ceil" begin
-        @test ceil(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Nanosecond(1)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123456789)
+        @test ceil(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(1)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789)
     end
 
     @testset "round" begin
-        @test round(Timestamp64(1970, 1, 1, 0, 0, 0, 123456789), Nanosecond(1)) == Timestamp64(1970, 1, 1, 0, 0, 0, 123456789)
+        @test round(Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789), Nanosecond(1)) ==
+            Timestamp64(1970, 1, 1, 0, 0, 0; nanoseconds=123456789)
     end
 
     @testset "floor DatePeriod" begin
@@ -150,5 +243,4 @@ using Timestamps64
             end
         end
     end
-
 end

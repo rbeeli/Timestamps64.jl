@@ -3,7 +3,6 @@ using Dates
 using Timestamps64
 
 @testset verbose = true "Base.show" begin
-
     @testset "Timestamp64(DateTime(1970, 1, 1))" begin
         ts = Timestamp64(DateTime(1970, 1, 1))
         io = IOBuffer()
@@ -46,11 +45,10 @@ using Timestamps64
         @test String(take!(io)) == "2020-01-01T12:34:56.000000000"
     end
 
-    @testset "Timestamp64(2020, 1, 1, 12, 34, 56, 123456789)" begin
-        ts = Timestamp64(2020, 1, 1, 12, 34, 56, 123456789)
+    @testset "Timestamp64(2020, 1, 1, 12, 34, 56, nanoseconds=123456789)" begin
+        ts = Timestamp64(2020, 1, 1, 12, 34, 56; nanoseconds=123456789)
         io = IOBuffer()
         show(io, ts)
         @test String(take!(io)) == "2020-01-01T12:34:56.123456789"
     end
-
 end

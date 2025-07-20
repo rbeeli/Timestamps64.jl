@@ -1,10 +1,15 @@
 using Dates: Dates
-import Base.Libc
+using Base.Libc: TmStruct
 
 """
 	Timestamp64(year::Int, month::Int, day::Int)
 
-Create a `Timestamp64` object from date components.
+Construct a `Timestamp64` from individual calendar components.
+
+# Arguments
+- `year`: Calendar year (e.g. `2025`).
+- `month`: Month of the year `1-12`.
+- `day`: Day of the month `1-31`.
 """
 function Timestamp64(year::Int, month::Int, day::Int)
     nss = 1_000_000_000
@@ -34,12 +39,48 @@ function Timestamp64(year::Int, month::Int, day::Int)
 end
 
 """
-	Timestamp64(year::Int, month::Int, day::Int)
+	Timestamp64(year::Integer, month::Integer, day::Integer)
 
-Create a `Timestamp64` object from date and time components.
+Construct a `Timestamp64` from individual calendar components.
+
+# Arguments
+- `year`: Calendar year (e.g. `2025`).
+- `month`: Month of the year `1-12`.
+- `day`: Day of the month `1-31`.
+"""
+@inline Timestamp64(year::T, month::T, day::T) where {T<:Integer} =
+    Timestamp64(Int(year), Int(month), Int(day))
+
+"""
+    Timestamp64(year::Int, month::Int, day::Int, hours::Int;
+                minutes::Int = 0, seconds::Int = 0, nanoseconds::Int = 0)
+
+Construct a `Timestamp64` from individual calendar and clock components.
+
+# Arguments
+- `year`: Calendar year (e.g. `2025`).
+- `month`: Month of the year `1-12`.
+- `day`: Day of the month `1-31`.
+- `hours`: Hour of the day `0-23`.
+- `minutes`: Minute of the hour `0-59` (default `0`).
+- `seconds`: Second of the minute `0-59` (default `0`).
+
+# Keyword Arguments
+- `nanoseconds`: Additional nanoseconds `0-999_999_999` (default `0`).
+
+# Examples
+```julia
+julia> Timestamp64(2025, 7, 20, 14, 30, 15, nanoseconds=1_000)
+2025-07-20T14:30:15.000001000
 """
 function Timestamp64(
-    year::Int, month::Int, day::Int, hours::Int, minutes::Int=0, seconds::Int=0, nanoseconds::Int=0
+    year::Int, #
+    month::Int,
+    day::Int,
+    hours::Int,
+    minutes::Int=0,
+    seconds::Int=0;
+    nanoseconds::Int=0, # kwarg to be explicit - Dates.DateTime takes milliseconds!
 )
     nss = 1_000_000_000
 
@@ -74,35 +115,42 @@ end
 
 """
 Returns the current time as a `Timestamp64` object with nanoseconds precision
-in local timezone.
+in **local** time zone.
 """
 @inline function Dates.now(::Type{Timestamp64})
-    ns_utc = _to_unix_ns(_clock_gettime()) # raw UTC nanoseconds
-    ns_off = _local_tz_offset_sec(ns_utc ÷ 1_000_000_000) * 1_000_000_000
-    Timestamp64(ns_utc + ns_off)
+    ts = _clock_gettime()
+    tm = TmStruct(ts.tv_sec)
+    Timestamp64(
+        1900 + Int(tm.year), #
+        1 + Int(tm.month),
+        Int(tm.mday),
+        Int(tm.hour),
+        Int(tm.min),
+        Int(tm.sec);
+        nanoseconds=ts.tv_nsec,
+    )
 end
 
 """
 Returns the current time as a `Timestamp64` object with nanoseconds precision
-in UTC timezone.
+in **UTC** time zone.
 """
-@inline function Dates.now(::Type{Timestamp64}, ::Type{Dates.UTC})
+@inline Dates.now(::Type{Timestamp64}, ::Type{Dates.UTC}) =
     Timestamp64(_to_unix_ns(_clock_gettime()))
-end
 
 """
 Returns the current date as a `Timestamp64` object with nanoseconds precision
-in local timezone. The time part is set to `00:00:00.000000`.
+in **local** time zone. The time part is set to `00:00:00.000000`.
 """
 @inline function Dates.today(::Type{Timestamp64})
-    ns_local = Dates.now(Timestamp64).ts
-    Timestamp64((ns_local ÷ 86_400_000_000_000) * 86_400_000_000_000)
+    ts = _clock_gettime()
+    tm = TmStruct(ts.tv_sec)
+    Timestamp64(1900 + Int(tm.year), 1 + Int(tm.month), Int(tm.mday))
 end
 
 """
 Returns the current date as a `Timestamp64` object with nanoseconds precision
-in UTC timezone. The time part is set to `00:00:00.000000`.
+in **UTC** time zone. The time part is set to `00:00:00.000000`.
 """
-@inline function Dates.today(::Type{Timestamp64}, ::Type{Dates.UTC})
+@inline Dates.today(::Type{Timestamp64}, ::Type{Dates.UTC}) =
     Timestamp64(_to_date_ns(_clock_gettime()))
-end

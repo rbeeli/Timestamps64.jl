@@ -72,7 +72,15 @@ Timestamp64(date::Dates.Date, time::Dates.Time)
 Create a `Timestamp64` object from a `Dates.Date` and a `Dates.Time`.
 """
 @inline function Timestamp64(date::Dates.Date, time::Dates.Time)
-    Timestamp64(Dates.year(date), Dates.month(date), Dates.day(date), 0, 0, 0, Dates.value(time))
+    Timestamp64(
+        Dates.year(date), #
+        Dates.month(date),
+        Dates.day(date),
+        0,
+        0,
+        0;
+        nanoseconds=Dates.value(time),
+    )
 end
 
 # Date, Time, DateTime <-> Timestamp64 conversions

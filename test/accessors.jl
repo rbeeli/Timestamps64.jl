@@ -3,7 +3,6 @@ using Dates
 using Timestamps64
 
 @testset verbose = true "Accessors" begin
-
     @testset "Dates.year" begin
         for dt in DateTime(1970, 1, 1):Day(1):DateTime(2262, 4, 11)
             ts = Timestamp64(dt)
@@ -83,38 +82,58 @@ using Timestamps64
     end
 
     @testset "Dates.millisecond" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, Dates.value(Nanosecond(Millisecond(789))))
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=Dates.value(Nanosecond(Millisecond(789))))
         @test millisecond(ts) == 789
     end
 
     @testset "Dates.microsecond" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, Dates.value(Nanosecond(Microsecond(789))))
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=Dates.value(Nanosecond(Microsecond(789))))
         @test microsecond(ts) == 789
     end
 
     @testset "Dates.nanosecond" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=789)
         @test nanosecond(ts) == 789
     end
 
     @testset "unix_nanos" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=789)
         @test unix_nanos(ts) == trunc(Int64, datetime2unix(DateTime(ts)) * 1_000^3) + 789
     end
 
     @testset "unix_micros" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=789)
         @test unix_micros(ts) == trunc(Int64, datetime2unix(DateTime(ts)) * 1_000^2)
     end
 
     @testset "unix_millis" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=789)
         @test unix_millis(ts) == trunc(Int64, datetime2unix(DateTime(ts)) * 1_000)
     end
 
     @testset "unix_secs" begin
-        ts = Timestamp64(2020, 1, 1, 0, 0, 0, 789) # 789 nanoseconds
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=789)
         @test unix_secs(ts) == trunc(Int64, datetime2unix(DateTime(ts)))
     end
 
+    @testset "unix(Dates.Nanosecond, ts)" begin
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=789)
+        @test unix(Dates.Nanosecond, ts) ==
+            trunc(Int64, datetime2unix(DateTime(ts)) * 1_000^3) + 789
+    end
+
+    @testset "unix(Dates.Microsecond, ts)" begin
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=789)
+        @test unix(Dates.Microsecond, ts) == trunc(Int64, datetime2unix(DateTime(ts)) * 1_000^2)
+    end
+
+    @testset "unix(Dates.Millisecond, ts)" begin
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=789)
+        @test unix(Dates.Millisecond, ts) == trunc(Int64, datetime2unix(DateTime(ts)) * 1_000)
+    end
+
+    @testset "unix(Dates.Second, ts)" begin
+        ts = Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=789)
+        @test unix(Dates.Second, ts) == trunc(Int64, datetime2unix(DateTime(ts)))
+    end
 end

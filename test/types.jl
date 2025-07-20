@@ -3,7 +3,6 @@ using Dates
 using Timestamps64
 
 @testset verbose = true "Types" begin
-
     @testset "zero(Timestamp64)" begin
         @test zero(Timestamp64) == Timestamp64(0)
     end
@@ -49,5 +48,4 @@ using Timestamps64
         @test convert(Date, Timestamp64(2020, 1, 1)) == Date(2020, 1, 1)
         @test convert(DateTime, Timestamp64(2020, 1, 1)) == DateTime(2020, 1, 1, 0, 0, 0)
     end
-
 end

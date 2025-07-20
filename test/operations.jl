@@ -3,14 +3,22 @@ using Dates
 using Timestamps64
 
 @testset verbose = true "Operations" begin
-
     @testset "+ FixedPeriod" begin
-        periods = [Week(1), Day(1), Hour(1),
-            Minute(1), Second(1), Millisecond(1), Microsecond(1), Nanosecond(1)]
+        periods = [
+            Week(1),
+            Day(1),
+            Hour(1),
+            Minute(1),
+            Second(1),
+            Millisecond(1),
+            Microsecond(1),
+            Nanosecond(1),
+        ]
 
         for period in periods
             ts = Timestamp64(2020, 1, 1) + period
-            @test ts == Timestamp64(2020, 1, 1, 0, 0, 0, Dates.value(Nanosecond(period)))
+            @test ts ==
+                Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=Dates.value(Nanosecond(period)))
             if period ∉ [Microsecond(1), Nanosecond(1)]
                 @test DateTime(ts) == DateTime(2020, 1, 1) + period
             end
@@ -27,12 +35,21 @@ using Timestamps64
     end
 
     @testset "- FixedPeriod" begin
-        periods = [Week(1), Day(1), Hour(1),
-            Minute(1), Second(1), Millisecond(1), Microsecond(1), Nanosecond(1)]
+        periods = [
+            Week(1),
+            Day(1),
+            Hour(1),
+            Minute(1),
+            Second(1),
+            Millisecond(1),
+            Microsecond(1),
+            Nanosecond(1),
+        ]
 
         for period in periods
             ts = Timestamp64(2020, 1, 1) - period
-            @test ts == Timestamp64(2020, 1, 1, 0, 0, 0, -Dates.value(Nanosecond(period)))
+            @test ts ==
+                Timestamp64(2020, 1, 1, 0, 0, 0; nanoseconds=-Dates.value(Nanosecond(period)))
             if period ∉ [Microsecond(1), Nanosecond(1)]
                 @test DateTime(ts) == DateTime(2020, 1, 1) - period
             end
@@ -65,5 +82,4 @@ using Timestamps64
         ts2 = Timestamp64(2020, 1, 2)
         @test ts2 - ts1 == Nanosecond(Day(1))
     end
-
 end

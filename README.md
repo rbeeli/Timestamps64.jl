@@ -46,7 +46,7 @@ using Timestamps64
 using Dates
 
 # Create a timestamp
-ts = Timestamp64(2021, 12, 31, 23, 58, 59, 123456789) # last parameter is nanoseconds
+ts = Timestamp64(2021, 12, 31, 23, 58, 59, nanoseconds=123456789)
 
 # Current timestamp in local time zone with nanosecond precision
 now(Timestamp64)

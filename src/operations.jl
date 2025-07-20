@@ -19,27 +19,59 @@ function (+)(ts::Timestamp64, y::Dates.Year)
     oy, m, d = yearmonthday(ts)
     ny = oy + Dates.value(y)
     ld = daysinmonth(ny, m)
-    Timestamp64(ny, m, d <= ld ? d : ld, hour(ts), minute(ts), second(ts), nanosecond(ts))
+    Timestamp64(
+        ny,  #
+        m,
+        d <= ld ? d : ld,
+        hour(ts),
+        minute(ts),
+        second(ts);
+        nanoseconds=nanosecond(ts),
+    )
 end
 function (-)(ts::Timestamp64, y::Dates.Year)
     oy, m, d = yearmonthday(ts)
     ny = oy - Dates.value(y)
     ld = daysinmonth(ny, m)
-    Timestamp64(ny, m, d <= ld ? d : ld, hour(ts), minute(ts), second(ts), nanosecond(ts))
+    Timestamp64(
+        ny,  #
+        m,
+        d <= ld ? d : ld,
+        hour(ts),
+        minute(ts),
+        second(ts);
+        nanoseconds=nanosecond(ts),
+    )
 end
 function (+)(ts::Timestamp64, z::Dates.Month)
     y, m, d = yearmonthday(ts)
     ny = yearwrap(y, m, Dates.value(z))
     mm = monthwrap(m, Dates.value(z))
     ld = daysinmonth(ny, mm)
-    Timestamp64(ny, mm, d <= ld ? d : ld, hour(ts), minute(ts), second(ts), nanosecond(ts))
+    Timestamp64(
+        ny, #
+        mm,
+        d <= ld ? d : ld,
+        hour(ts),
+        minute(ts),
+        second(ts);
+        nanoseconds=nanosecond(ts),
+    )
 end
 function (-)(ts::Timestamp64, z::Dates.Month)
     y, m, d = yearmonthday(ts)
     ny = yearwrap(y, m, -Dates.value(z))
     mm = monthwrap(m, -Dates.value(z))
     ld = daysinmonth(ny, mm)
-    Timestamp64(ny, mm, d <= ld ? d : ld, hour(ts), minute(ts), second(ts), nanosecond(ts))
+    Timestamp64(
+        ny,  #
+        mm,
+        d <= ld ? d : ld,
+        hour(ts),
+        minute(ts),
+        second(ts);
+        nanoseconds=nanosecond(ts),
+    )
 end
 @inline (+)(ts::Timestamp64, y::Dates.Quarter) = ts + Dates.Month(y)
 @inline (-)(ts::Timestamp64, y::Dates.Quarter) = ts - Dates.Month(y)

@@ -142,7 +142,7 @@ function Timestamp64(s::T) where {T<:AbstractString}
     end
 
     @label done
-    return Timestamp64(dy, dm, dd, th, tm, ts, tns)
+    return Timestamp64(dy, dm, dd, th, tm, ts; nanoseconds=tns)
 
     @label error
     throw(ArgumentError("Invalid Timestamp64 string"))

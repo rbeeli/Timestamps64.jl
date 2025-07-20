@@ -34,32 +34,32 @@ function _clock_gettime()::TimeSpec
     ts[]
 end
 
-"""
-Returns the local time zone offset of a UNIX timestamp in seconds.
+# """
+# Returns the local time zone offset of a UNIX timestamp in seconds.
 
-https://pubs.opengroup.org/onlinepubs/7908799/xsh/wcsftime.html
-"""
-function _local_tz_offset_sec(utc_sec::Int64)::Int64
-    tm = TmStruct(utc_sec)
+# https://pubs.opengroup.org/onlinepubs/7908799/xsh/wcsftime.html
+# """
+# function _local_tz_offset_sec(utc_sec::Int64)::Int64
+#     tm = TmStruct(utc_sec)
 
-    fmt = "%z"
-    zstr = Vector{Cwchar_t}(undef, 6)
-    # https://github.com/JuliaLang/julia/blob/9615af0f269df4d371b8010e9507ed5bae86103b/base/libc.jl#L231
-    n = ccall(
-        :wcsftime,
-        Csize_t,
-        (Ptr{Cwchar_t}, Csize_t, Cwstring, Ref{TmStruct}),
-        zstr,
-        length(zstr),
-        fmt,
-        tm,
-    )
-    n == 0 && return 0 # unknown / not implemented time zone
-    @assert n == 5 "Local time zone UTC offset string expected to be 5 characters, got $n"
+#     fmt = "%z"
+#     zstr = Vector{Cwchar_t}(undef, 6)
+#     # https://github.com/JuliaLang/julia/blob/9615af0f269df4d371b8010e9507ed5bae86103b/base/libc.jl#L231
+#     n = ccall(
+#         :wcsftime,
+#         Csize_t,
+#         (Ptr{Cwchar_t}, Csize_t, Cwstring, Ref{TmStruct}),
+#         zstr,
+#         length(zstr),
+#         fmt,
+#         tm,
+#     )
+#     n == 0 && return 0 # unknown / not implemented time zone
+#     @assert n == 5 "Local time zone UTC offset string expected to be 5 characters, got $n"
 
-    # convert e.g. "+0100" to 3600
-    sign = zstr[1] == Int32('+') ? 1 : -1
-    hours = (zstr[2] - 0x30) * 10 + (zstr[3] - 0x30)
-    mins = (zstr[4] - 0x30) * 10 + (zstr[5] - 0x30)
-    sign * (hours * 3600 + mins * 60)
-end
+#     # convert e.g. "+0100" to 3600
+#     sign = zstr[1] == Int32('+') ? 1 : -1
+#     hours = (zstr[2] - 0x30) * 10 + (zstr[3] - 0x30)
+#     mins = (zstr[4] - 0x30) * 10 + (zstr[5] - 0x30)
+#     sign * (hours * 3600 + mins * 60)
+# end
