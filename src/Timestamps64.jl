@@ -1,10 +1,14 @@
 module Timestamps64
 
-@static if Base.Sys.WORD_SIZE != 64
+@static if Sys.WORD_SIZE != 64
     error("Timestamps64.jl only supports 64-bit systems")
 end
 
-export Timestamp64, #
+@static if Sys.iswindows()
+    error("Timestamps64.jl is currently not supporting Windows systems")
+end
+
+export Timestamp64,
     ISOTimestamp64Format,
     RFC3339Timestamp64Format,
     iso8601,
@@ -27,4 +31,4 @@ include("format.jl")
 include("parse.jl")
 include("print.jl")
 
-end # module Timestamp
+end # module Timestamps64
