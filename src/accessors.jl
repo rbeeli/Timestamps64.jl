@@ -74,46 +74,34 @@ end
 """
 Returns the hour of the day as an integer.
 """
-@inline function Dates.hour(timestamp::Timestamp64)
-    (timestamp.ts ÷ (3_600 * 1_000_000_000)) % 24
-end
+@inline Dates.hour(timestamp::Timestamp64) = (timestamp.ts ÷ (3_600 * 1_000_000_000)) % 24
 
 """
 Returns the minute of the hour as an integer.
 """
-@inline function Dates.minute(timestamp::Timestamp64)
-    (timestamp.ts ÷ (60 * 1_000_000_000)) % 60
-end
+@inline Dates.minute(timestamp::Timestamp64) = (timestamp.ts ÷ (60 * 1_000_000_000)) % 60
 
 """
 Returns the second of the minute as an integer.
 """
-@inline function Dates.second(timestamp::Timestamp64)
-    (timestamp.ts ÷ 1_000_000_000) % 60
-end
+@inline Dates.second(timestamp::Timestamp64) = (timestamp.ts ÷ 1_000_000_000) % 60
 
 """
 Returns the millisecond part of the `Timestamp64` as an integer.
 Microseconds and nanoseconds are truncated.
 """
-@inline function Dates.millisecond(timestamp::Timestamp64)
-    (timestamp.ts % 1_000_000_000) ÷ 1_000_000
-end
+@inline Dates.millisecond(timestamp::Timestamp64) = (timestamp.ts % 1_000_000_000) ÷ 1_000_000
 
 """
 Returns the microsecond part of the `Timestamp64` as an integer.
 Nanoseconds are truncated.
 """
-@inline function Dates.microsecond(timestamp::Timestamp64)
-    (timestamp.ts % 1_000_000_000) ÷ 1_000
-end
+@inline Dates.microsecond(timestamp::Timestamp64) = (timestamp.ts % 1_000_000_000) ÷ 1_000
 
 """
 Returns the nanosecond part of the `Timestamp64` as an integer.
 """
-@inline function Dates.nanosecond(timestamp::Timestamp64)
-    (timestamp.ts % 1_000_000_000)
-end
+@inline Dates.nanosecond(timestamp::Timestamp64) = (timestamp.ts % 1_000_000_000)
 
 """
 Returns the UNIX timestamp in nanoseconds.

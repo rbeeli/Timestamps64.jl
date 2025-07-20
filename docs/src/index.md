@@ -72,7 +72,7 @@ Timestamp64("2021-01-01T00:00:00.000001Z") # 1 microsecond
 Timestamp64("2021-01-01T00:00:00.000000001") # 1 nanosecond
 Timestamp64("2021-01-01T00:00:00.000000001Z") # 1 nanosecond
 
-# Base.parse is also supported (only ISO 8601 format with up to nanosecond precision)
+# Base.parse is also supported (only ISO 8601 / RFC 3999 up to nanoseconds formats)
 parse(Timestamp64, "2021-01-01T00:00:00.000000001Z", Dates.ISODateTimeFormat)
 parse(Timestamp64, "2021-01-01T00:00:00")
 parse(Timestamp64, "2021-01-01T00:00:00.001")

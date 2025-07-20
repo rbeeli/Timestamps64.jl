@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.5.0] – 2025‑07‑20
+
+### Added
+
+-   New `rfc3339` formatting function (adds trailing `Z`, `iso8601` doesn't)
+-   New `Dates.DateFormat` template `RFC3339Timestamp64Format`
+
+### Changed
+
+-   Optimized implementation of `iso8601`
+
 ## [0.4.0] – 2025‑07‑20
 
 ### Breaking ⚠️

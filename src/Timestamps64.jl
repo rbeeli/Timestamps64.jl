@@ -6,7 +6,9 @@ end
 
 export Timestamp64, #
     ISOTimestamp64Format,
+    RFC3339Timestamp64Format,
     iso8601,
+    rfc3339,
     unix_nanos,
     unix_micros,
     unix_millis,
