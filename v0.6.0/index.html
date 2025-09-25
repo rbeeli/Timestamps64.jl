@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Timestamps64.jl · Timestamps64.jl</title><meta name="title" content="Timestamps64.jl · Timestamps64.jl"/><meta property="og:title" content="Timestamps64.jl · Timestamps64.jl"/><meta property="twitter:title" content="Timestamps64.jl · Timestamps64.jl"/><meta name="description" content="Documentation for Timestamps64.jl."/><meta property="og:description" content="Documentation for Timestamps64.jl."/><meta property="twitter:description" content="Documentation for Timestamps64.jl."/><script data-outdated-warner src="assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="assets/documenter.js"></script><script src="search_index.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href>Timestamps64.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li class="is-active"><a class="tocitem" href>Timestamps64.jl</a><ul class="internal"><li><a class="tocitem" href="#Supported-platforms"><span>Supported platforms</span></a></li><li><a class="tocitem" href="#Background"><span>Background</span></a></li><li><a class="tocitem" href="#API-documentation"><span>API documentation</span></a></li><li><a class="tocitem" href="#Performance"><span>Performance</span></a></li><li><a class="tocitem" href="#Bug-reports-and-feature-requests"><span>Bug reports and feature requests</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Timestamps64.jl</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Timestamps64.jl</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/rbeeli/Timestamps64.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/rbeeli/Timestamps64.jl/blob/main/docs/src/index.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Timestamps64.jl"><a class="docs-heading-anchor" href="#Timestamps64.jl">Timestamps64.jl</a><a id="Timestamps64.jl-1"></a><a class="docs-heading-anchor-permalink" href="#Timestamps64.jl" title="Permalink"></a></h1><p><a href="https://github.com/rbeeli/Timestamps64.jl/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"/></a> <img src="https://img.shields.io/maintenance/yes/2025" alt="Maintenance"/> <a href="https://rbeeli.github.io/Timestamps64.jl/stable/"><img src="https://img.shields.io/badge/docs-stable-blue.svg" alt="Stable Documentation"/></a> <a href="https://rbeeli.github.io/Timestamps64.jl/dev/"><img src="https://img.shields.io/badge/docs-dev-blue.svg" alt="Dev Documentation"/></a></p><p>This package provides an efficient <code>Timestamp64</code> datetime type with nanosecond precision. It is a wrapper around a single <code>Int64</code> value (8 bytes) that represents the number of nanoseconds since the UNIX epoch. Benchmarks show that common date/time operations are as fast as Julia&#39;s built-in <code>DateTime</code> type, or even significantly faster in some cases (see below).</p><p><code>Timestamp64</code> can store values ranging from <code>1970-01-01T00:00:00.000000000</code> to <code>2262-04-11 23:47:16.854775807</code>, which should be sufficient for most applications.</p><p>This package works with Julia&#39;s built-in <code>Dates</code> module, providing methods to convert between <code>Timestamp64</code> and <code>DateTime</code>, <code>Date</code>, and <code>Time</code> types. Furthermore, the common accessor functions for year, month, day, hour, minute, second, millisecond, microsecond, and nanosecond, among others, are provided.</p><p>Every function is unit-tested to ensure correctness, usually against the corresponding <code>Dates</code> function.</p><div class="admonition is-info" id="Timestamps64-precision-vs.-Dates.DateTime-1af933c14083666"><header class="admonition-header">Timestamps64 precision vs. Dates.DateTime<a class="admonition-anchor" href="#Timestamps64-precision-vs.-Dates.DateTime-1af933c14083666" title="Permalink"></a></header><div class="admonition-body"><p>The default precision/unit of the difference of two <code>Timestamp64</code> objects is <code>Nanosecond</code>, while the default precision/unit of the difference of two <code>DateTime</code> objects is <code>Millisecond</code>.</p></div></div><div class="admonition is-info" id="Timestamps64-time-rounding-vs.-Dates.DateTime-fe332c02c63d230c"><header class="admonition-header">Timestamps64 time rounding vs. Dates.DateTime<a class="admonition-anchor" href="#Timestamps64-time-rounding-vs.-Dates.DateTime-fe332c02c63d230c" title="Permalink"></a></header><div class="admonition-body"><p>Due to a different origin epoch (<code>1970-01-01T00:00:00.000000000</code> in <code>Timestamp64</code> vs. <code>0000-01-01T00:00:00</code> in <code>DateTime</code>), the rounding of <code>Timestamp64</code> with time periods smaller than <code>Day(1)</code> is not identical to the rounding of <code>DateTime</code>. This implementation corresponds to C++&#39;s <code>chrono</code> rounding behavior.</p></div></div><h2 id="Supported-platforms"><a class="docs-heading-anchor" href="#Supported-platforms">Supported platforms</a><a id="Supported-platforms-1"></a><a class="docs-heading-anchor-permalink" href="#Supported-platforms" title="Permalink"></a></h2><p>This package is supported on the following platforms (64-bit only):</p><ul><li>Linux</li><li>macOS Sierra 10.12 and later (needs <code>clock_gettime</code> support)</li></ul><p>Examples of not supported platforms:</p><ul><li>Any 32-bit system</li><li>Windows operating systems</li><li>Older macOS versions before 10.12</li></ul><h2 id="Background"><a class="docs-heading-anchor" href="#Background">Background</a><a id="Background-1"></a><a class="docs-heading-anchor-permalink" href="#Background" title="Permalink"></a></h2><p>The reason this package was created is that the built-in <code>Dates.DateTime</code> type in Julia is not able to represent nanosecond precision. The <code>Dates.DateTime</code> type has millisecond precision, which is insufficient for some specialized applications.</p><h2 id="API-documentation"><a class="docs-heading-anchor" href="#API-documentation">API documentation</a><a id="API-documentation-1"></a><a class="docs-heading-anchor-permalink" href="#API-documentation" title="Permalink"></a></h2><pre><code class="language-julia hljs">using Timestamps64
+using Dates
+
+# Create a timestamp
+ts = Timestamp64(2021, 12, 31, 23, 58, 59, nanoseconds=123456789)
+
+# Current timestamp in UTC with nanosecond precision
+now(Timestamp64)
+
+# Current timestamp in UTC with nanosecond precision (explicit)
+now(Timestamp64, UTC)
+
+# Today&#39;s timestamp in UTC at midnight
+today(Timestamp64)
+
+# Today&#39;s timestamp in UTC at midnight (explicit)
+today(Timestamp64, UTC)
+
+# Convert from various ISO 8601 string formats
+Timestamp64(&quot;2021-01-01T00:00:01&quot;)
+Timestamp64(&quot;2021-01-01T00:00:01Z&quot;)
+Timestamp64(&quot;2021-01-01T00:00:00.001&quot;) # 1 millisecond
+Timestamp64(&quot;2021-01-01T00:00:00.001Z&quot;) # 1 millisecond
+Timestamp64(&quot;2021-01-01T00:00:00.000001&quot;) # 1 microsecond
+Timestamp64(&quot;2021-01-01T00:00:00.000001Z&quot;) # 1 microsecond
+Timestamp64(&quot;2021-01-01T00:00:00.000000001&quot;) # 1 nanosecond
+Timestamp64(&quot;2021-01-01T00:00:00.000000001Z&quot;) # 1 nanosecond
+
+# Base.parse is also supported (only ISO 8601 / RFC 3999 up to nanoseconds formats)
+parse(Timestamp64, &quot;2021-01-01T00:00:00.000000001Z&quot;, Dates.ISODateTimeFormat)
+parse(Timestamp64, &quot;2021-01-01T00:00:00&quot;)
+parse(Timestamp64, &quot;2021-01-01T00:00:00.001&quot;)
+parse(Timestamp64, &quot;2021-01-01T00:00:00.000000001Z&quot;, ISOTimestamp64Format)
+
+
+## Dates conversion
+
+# Convert to DateTime, which only has millisecond precision
+DateTime(ts)
+convert(DateTime, ts)
+
+# Convert to Date
+Date(ts)
+convert(Date, ts)
+
+# Convert to Time
+Time(ts)
+convert(Time, ts)
+
+# Create from DateTime (only with millisecond precision)
+dt = now()
+Timestamp64(dt)
+
+# Create from Date and Time (nanosecond precision)
+Timestamp64(Date(2021, 12, 31), Time(23, 58, 59, 123, 456, 789))
+
+
+## Accessor functions
+year(ts)
+month(ts)
+day(ts)
+hour(ts)
+minute(ts)
+second(ts)
+nanosecond(ts)
+millisecond(ts)
+microsecond(ts)
+nanosecond(ts)
+yearmonth(ts)
+yearmonthday(ts)
+monthday(ts)
+monthname(ts)
+isleapyear(ts)
+dayofweek(ts)
+
+
+## String conversions
+
+# Convert to string (ISO 8601 default)
+string(ts)
+
+# Convert to ISO 8601 string explicitly
+iso8601(ts)
+
+# Print string (ISO 8601 default)
+println(ts)
+
+# Dates.format is also supported
+Dates.format(ts, Dates.ISODateTimeFormat)
+Dates.format(ts, ISOTimestamp64Format)
+
+
+## Arithmetics
+
+# Add period
+ts2 = ts + Millisecond(100)
+ts2 - ts
+
+# Subtract period
+ts2 = ts - Microsecond(1)
+ts2 - ts
+
+# Difference of two timestamps
+ts1 = Timestamp64(2022, 12, 31, 23, 58, 59)
+ts2 = Timestamp64(2023, 1, 1, 23, 58, 59)
+ts2 - ts1
+Day(ts2 - ts1)
+
+
+## Numeric operations
+
+# Type constants
+eps(Timestamp64)
+zero(Timestamp64)
+iszero(Timestamp64(0))
+typemin(Timestamp64)
+typemax(Timestamp64)
+
+# Compare timestamps
+ts1 &lt; ts2
+ts1 &gt; ts2
+ts1 == ts2
+
+# Automatic type promotion
+Timestamp64(2020, 1, 1) &lt; DateTime(2020, 1, 2)
+Timestamp64(2020, 1, 1) &lt; Date(2020, 1, 2)
+
+
+## Rounding
+
+# Floor to nearest period value
+floor(ts, Nanosecond(5))
+floor(ts, Microsecond(5))
+floor(ts, Millisecond(5))
+floor(ts, Second(5))
+floor(ts, Minute(5))
+floor(ts, Hour(5))
+floor(ts, Day(5))
+floor(ts, Month(5))
+floor(ts, Quarter(5))
+floor(ts, Year(5))
+
+# Ceil to nearest period
+ceil(ts, Nanosecond(5))
+ceil(ts, Microsecond(5))
+ceil(ts, Millisecond(5))
+ceil(ts, Second(5))
+ceil(ts, Minute(5))
+ceil(ts, Hour(5))
+ceil(ts, Day(5))
+ceil(ts, Month(5))
+ceil(ts, Quarter(5))
+ceil(ts, Year(5))
+
+# Round to nearest period
+round(ts, Nanosecond(5))
+round(ts, Microsecond(5))
+round(ts, Millisecond(5))
+round(ts, Second(5))
+round(ts, Minute(5))
+round(ts, Hour(5))
+round(ts, Day(5))
+round(ts, Month(5))
+round(ts, Quarter(5))
+round(ts, Year(5))
+
+
+## Ranges
+
+# Create a range of timestamps using arbitrary periods
+collect(Timestamp64(2020, 1, 1):Day(1):Timestamp64(2020, 1, 10))
+collect(Timestamp64(2020, 1, 1):Week(1):Timestamp64(2020, 1, 31))
+collect(Timestamp64(2020, 1, 1):Month(1):Timestamp64(2020, 12, 31))
+collect(Timestamp64(2020, 1, 1):Quarter(1):Timestamp64(2020, 12, 31))
+collect(Timestamp64(2020, 1, 1):Year(1):Timestamp64(2022, 1, 1))
+
+
+## UNIX timestamp conversions
+
+# create from UNIX timestamp in nanoseconds
+Timestamp64(1704412800000000000)
+
+# get UNIX timestamp in nanoseconds
+Dates.value(ts)
+unix_nanos(ts)
+unix(Nanosecond, ts)
+
+# get UNIX timestamp in microseconds
+unix_micros(ts)
+unix(Microsecond, ts)
+
+# get UNIX timestamp in milliseconds
+unix_millis(ts)
+unix(Millisecond, ts)
+
+# get UNIX timestamp in seconds
+unix_secs(ts)
+unix(Second, ts)</code></pre><h2 id="Performance"><a class="docs-heading-anchor" href="#Performance">Performance</a><a id="Performance-1"></a><a class="docs-heading-anchor-permalink" href="#Performance" title="Permalink"></a></h2><p>The <code>Timestamp64</code> implementation is very efficient and has a small memory footprint with only 8 bytes. Common operations such as creating, parsing, converting, and formatting timestamps have been optimized and are as fast as Julia&#39;s built-in <code>DateTime</code> implementation, or even faster.</p><p>The following benchmark results have been obtained on an Intel(R) Core(TM) i9-12900K CPU on Ubuntu 22.04 using Julia 1.10.4.</p><h3 id="Get-object-with-current-date/time-in-UTC"><a class="docs-heading-anchor" href="#Get-object-with-current-date/time-in-UTC">Get object with current date/time in UTC</a><a id="Get-object-with-current-date/time-in-UTC-1"></a><a class="docs-heading-anchor-permalink" href="#Get-object-with-current-date/time-in-UTC" title="Permalink"></a></h3><pre><code class="language-julia hljs">using BenchmarkTools
+using Timestamps64
+using Dates
+
+@btime now(Timestamp64, UTC);
+@btime now(UTC);</code></pre><h4 id="Result"><a class="docs-heading-anchor" href="#Result">Result</a><a id="Result-1"></a><a class="docs-heading-anchor-permalink" href="#Result" title="Permalink"></a></h4><pre><code class="language-console hljs">julia&gt; @btime now(Timestamp64, UTC);
+  11.392 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime now(UTC);
+  22.015 ns (0 allocations: 0 bytes)</code></pre><p>The <code>Timestamp64</code> type is almost <strong>2 times faster</strong> at getting the current UTC time compared to Julia&#39;s built-in <code>DateTime</code> type!</p><h3 id="Construction-from-date-parts"><a class="docs-heading-anchor" href="#Construction-from-date-parts">Construction from date parts</a><a id="Construction-from-date-parts-1"></a><a class="docs-heading-anchor-permalink" href="#Construction-from-date-parts" title="Permalink"></a></h3><pre><code class="language-julia hljs">using BenchmarkTools
+using Timestamps64
+using Dates
+
+const year = 2021;
+
+@btime Timestamp64($year, 1, 1, 0, 0, 1, 123*1_000_000); # last parameter in nanoseconds!
+@btime DateTime($year, 1, 1, 0, 0, 1, 123);</code></pre><h4 id="Result-2"><a class="docs-heading-anchor" href="#Result-2">Result</a><a class="docs-heading-anchor-permalink" href="#Result-2" title="Permalink"></a></h4><p>The <code>Timestamp64</code> type is <strong>1.7 times faster</strong> at constructing a datetime object from its parts compared to Julia&#39;s built-in <code>DateTime</code> type!</p><pre><code class="language-console hljs">julia&gt; @btime Timestamp64($year, 1, 1, 0, 0, 1, 123);
+  3.364 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime DateTime($year, 1, 1, 0, 0, 1, 123);
+  5.644 ns (0 allocations: 0 bytes)</code></pre><h3 id="Parsing-ISO-8601-strings"><a class="docs-heading-anchor" href="#Parsing-ISO-8601-strings">Parsing ISO 8601 strings</a><a id="Parsing-ISO-8601-strings-1"></a><a class="docs-heading-anchor-permalink" href="#Parsing-ISO-8601-strings" title="Permalink"></a></h3><pre><code class="language-julia hljs">using BenchmarkTools
+using Timestamps64
+using Dates
+
+@btime Timestamp64(&quot;2021-01-01T00:00:01&quot;);
+@btime DateTime(&quot;2021-01-01T00:00:01&quot;);
+
+@btime Timestamp64(&quot;2021-01-01T00:00:01.001&quot;);
+@btime DateTime(&quot;2021-01-01T00:00:01.001&quot;);</code></pre><h4 id="Result-3"><a class="docs-heading-anchor" href="#Result-3">Result</a><a class="docs-heading-anchor-permalink" href="#Result-3" title="Permalink"></a></h4><p>The <code>Timestamp64</code> type is almost <strong>1.5 times faster</strong> at parsing ISO 8601 strings compared to Julia&#39;s built-in <code>DateTime</code> type!</p><pre><code class="language-console hljs">julia&gt; @btime Timestamp64(&quot;2021-01-01T00:00:01&quot;);
+  16.175 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime DateTime(&quot;2021-01-01T00:00:01&quot;);
+  23.312 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime Timestamp64(&quot;2021-01-01T00:00:01.001&quot;);
+  19.271 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime DateTime(&quot;2021-01-01T00:00:01.001&quot;);
+  27.942 ns (0 allocations: 0 bytes)</code></pre><h3 id="Format-to-ISO-8601-strings"><a class="docs-heading-anchor" href="#Format-to-ISO-8601-strings">Format to ISO 8601 strings</a><a id="Format-to-ISO-8601-strings-1"></a><a class="docs-heading-anchor-permalink" href="#Format-to-ISO-8601-strings" title="Permalink"></a></h3><pre><code class="language-julia hljs">using BenchmarkTools
+using Timestamps64
+using Dates
+
+ts = Timestamp64(2021, 1, 1, 0, 0, 1) + Millisecond(123)
+dt = DateTime(2021, 1, 1, 0, 0, 1) + Millisecond(123)
+
+# ISO 8601 string formatting
+@btime Dates.format($ts, ISOTimestamp64Format);
+@btime Dates.format($dt, Dates.ISODateTimeFormat);</code></pre><h4 id="Result-4"><a class="docs-heading-anchor" href="#Result-4">Result</a><a class="docs-heading-anchor-permalink" href="#Result-4" title="Permalink"></a></h4><p>The <code>Timestamp64</code> type is more than <strong>6 times faster</strong> at formatting to a ISO 8601 string compared to Julia&#39;s built-in <code>DateTime</code> type, and with fewer allocations!</p><pre><code class="language-console hljs">julia&gt; @btime Dates.format($ts, ISOTimestamp64Format);
+  46.626 ns (4 allocations: 200 bytes)
+
+julia&gt; @btime Dates.format($dt, Dates.ISODateTimeFormat);
+  286.392 ns (19 allocations: 928 bytes)</code></pre><h3 id="Calculate-difference"><a class="docs-heading-anchor" href="#Calculate-difference">Calculate difference</a><a id="Calculate-difference-1"></a><a class="docs-heading-anchor-permalink" href="#Calculate-difference" title="Permalink"></a></h3><p>Note that the <code>Timestamp64</code> type has nanosecond precision, while the <code>DateTime</code> type has millisecond precision, so the return type is correspondingly <code>Nanosecond</code> for <code>Timestamp64</code> and <code>Millisecond</code> for <code>DateTime</code>.</p><pre><code class="language-julia hljs">using BenchmarkTools
+using Timestamps64
+using Dates
+
+ts1 = Timestamp64(2021, 1, 1, 0, 0, 1);
+ts2 = Timestamp64(2021, 1, 1, 0, 0, 2);
+
+dt1 = DateTime(2021, 1, 1, 0, 0, 1);
+dt2 = DateTime(2021, 1, 1, 0, 0, 2);
+
+@btime $ts2 - $ts1;
+@btime $dt2 - $dt1;</code></pre><h4 id="Result-5"><a class="docs-heading-anchor" href="#Result-5">Result</a><a class="docs-heading-anchor-permalink" href="#Result-5" title="Permalink"></a></h4><p>Identical performance for both <code>Timestamp64</code> and <code>DateTime</code> types.</p><pre><code class="language-console hljs">julia&gt; @btime $ts2 - $ts1;
+  1.356 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime $dt2 - $dt1;
+  1.358 ns (0 allocations: 0 bytes)</code></pre><h3 id="Access-UNIX-timestamp-in-seconds"><a class="docs-heading-anchor" href="#Access-UNIX-timestamp-in-seconds">Access UNIX timestamp in seconds</a><a id="Access-UNIX-timestamp-in-seconds-1"></a><a class="docs-heading-anchor-permalink" href="#Access-UNIX-timestamp-in-seconds" title="Permalink"></a></h3><pre><code class="language-julia hljs">using BenchmarkTools
+using Timestamps64
+using Dates
+
+ts = Timestamp64(2021, 1, 1, 0, 0, 1) + Millisecond(123);
+dt = DateTime(2021, 1, 1, 0, 0, 1) + Millisecond(123);
+
+@btime unix_secs($ts);
+@btime trunc(Int64, datetime2unix($dt));</code></pre><h4 id="Result-6"><a class="docs-heading-anchor" href="#Result-6">Result</a><a class="docs-heading-anchor-permalink" href="#Result-6" title="Permalink"></a></h4><p>Due to the internal representation of the <code>Timestamp64</code> value as UNIX timestamp in nanoseconds, the conversion to a UNIX timestamp in seconds is trivial and therefore <strong>2.3 times faster</strong> compared to Julia&#39;s built-in <code>DateTime</code> type using the <code>datetime2unix</code> function.</p><pre><code class="language-console hljs">julia&gt; @btime unix_secs($ts);
+  1.571 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime trunc(Int64, datetime2unix($dt));
+  3.654 ns (0 allocations: 0 bytes)</code></pre><h3 id="Access-UNIX-timestamp-in-milliseconds"><a class="docs-heading-anchor" href="#Access-UNIX-timestamp-in-milliseconds">Access UNIX timestamp in milliseconds</a><a id="Access-UNIX-timestamp-in-milliseconds-1"></a><a class="docs-heading-anchor-permalink" href="#Access-UNIX-timestamp-in-milliseconds" title="Permalink"></a></h3><pre><code class="language-julia hljs">using BenchmarkTools
+using Timestamps64
+using Dates
+
+ts = Timestamp64(2021, 1, 1, 0, 0, 1) + Millisecond(123);
+dt = DateTime(2021, 1, 1, 0, 0, 1) + Millisecond(123);
+
+@btime unix_millis($ts);
+@btime trunc(Int64, datetime2unix($dt)*1000);</code></pre><h4 id="Result-7"><a class="docs-heading-anchor" href="#Result-7">Result</a><a class="docs-heading-anchor-permalink" href="#Result-7" title="Permalink"></a></h4><p>Due to the internal representation of the <code>Timestamp64</code> value as UNIX timestamp in nanoseconds, the conversion to a UNIX timestamp in seconds is trivial and therefore <strong>2.6 times faster</strong> compared to Julia&#39;s built-in <code>DateTime</code> type using the <code>datetime2unix</code> function.</p><pre><code class="language-console hljs">julia&gt; @btime unix_millis($ts);
+  1.729 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime trunc(Int64, datetime2unix($dt)*1000);
+  4.420 ns (0 allocations: 0 bytes)</code></pre><h3 id="Create-object-from-UNIX-timestamp-in-milliseconds"><a class="docs-heading-anchor" href="#Create-object-from-UNIX-timestamp-in-milliseconds">Create object from UNIX timestamp in milliseconds</a><a id="Create-object-from-UNIX-timestamp-in-milliseconds-1"></a><a class="docs-heading-anchor-permalink" href="#Create-object-from-UNIX-timestamp-in-milliseconds" title="Permalink"></a></h3><pre><code class="language-julia hljs">using BenchmarkTools
+using Timestamps64
+using Dates
+
+unix_millis = 1609459201000; # 2021-01-01T00:00:01.000000000
+
+@btime Timestamp64($unix_millis * 1_000_000);
+@btime unix2datetime($unix_millis / 1000);</code></pre><h4 id="Result-8"><a class="docs-heading-anchor" href="#Result-8">Result</a><a class="docs-heading-anchor-permalink" href="#Result-8" title="Permalink"></a></h4><p>The <code>Timestamp64</code> type is <strong>3.3 times faster</strong> at creating a timestamp from a UNIX timestamp in milliseconds compared to Julia&#39;s built-in <code>DateTime</code> type! This is partly due to the additional division operation required for the <code>DateTime</code> type.</p><pre><code class="language-console hljs">julia&gt; @btime Timestamp64($unix_millis * 1_000_000);
+  1.378 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime unix2datetime($unix_millis / 1000);
+  4.507 ns (0 allocations: 0 bytes)</code></pre><h3 id="Create-object-from-UNIX-timestamp-in-seconds"><a class="docs-heading-anchor" href="#Create-object-from-UNIX-timestamp-in-seconds">Create object from UNIX timestamp in seconds</a><a id="Create-object-from-UNIX-timestamp-in-seconds-1"></a><a class="docs-heading-anchor-permalink" href="#Create-object-from-UNIX-timestamp-in-seconds" title="Permalink"></a></h3><pre><code class="language-julia hljs">using BenchmarkTools
+using Timestamps64
+using Dates
+
+unix_secs = 1609459201; # 2021-01-01T00:00:01.000000000
+
+@btime Timestamp64($unix_secs * 1_000_000_000);
+@btime unix2datetime($unix_secs);</code></pre><h4 id="Result-9"><a class="docs-heading-anchor" href="#Result-9">Result</a><a class="docs-heading-anchor-permalink" href="#Result-9" title="Permalink"></a></h4><p>Almost identical performance for both <code>Timestamp64</code> and <code>DateTime</code> types.</p><pre><code class="language-console hljs">julia&gt; @btime Timestamp64($unix_secs * 1_000_000_000);
+  1.539 ns (0 allocations: 0 bytes)
+
+julia&gt; @btime unix2datetime($unix_secs);
+  1.570 ns (0 allocations: 0 bytes)</code></pre><h2 id="Bug-reports-and-feature-requests"><a class="docs-heading-anchor" href="#Bug-reports-and-feature-requests">Bug reports and feature requests</a><a id="Bug-reports-and-feature-requests-1"></a><a class="docs-heading-anchor-permalink" href="#Bug-reports-and-feature-requests" title="Permalink"></a></h2><p>Please report any issues via the <a href="https://github.com/rbeeli/Timestamps64.jl/issues">GitHub issue tracker</a>.</p></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Thursday 25 September 2025 20:03">Thursday 25 September 2025</span>. Using Julia version 1.11.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
