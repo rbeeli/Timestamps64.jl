@@ -27,14 +27,14 @@ Every function is unit-tested to ensure correctness, usually against the corresp
 
 This package is supported on the following platforms (64-bit only):
 
--   Linux
--   macOS Sierra 10.12 and later (needs `clock_gettime` support)
+- Linux
+- macOS Sierra 10.12 and later (needs `clock_gettime` support)
 
 Examples of not supported platforms:
 
--   Any 32-bit system
--   Windows operating systems
--   Older macOS versions before 10.12
+- Any 32-bit system
+- Windows operating systems
+- Older macOS versions before 10.12
 
 ## Background
 
