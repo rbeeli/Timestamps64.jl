@@ -1,0 +1,7 @@
+{
+	"recommendations": [
+		"mazenb.mk-targets-runner",
+		"julialang.language-julia",
+		"nefrob.vscode-just-syntax"
+	]
+}

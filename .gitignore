@@ -24,5 +24,4 @@ docs/src/examples/gen/
 # environment.
 Manifest.toml
 
-.vscode/
 test/rounding
