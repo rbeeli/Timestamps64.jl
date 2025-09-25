@@ -1,14 +1,3 @@
-module Timestamps64Tests
+using TestItemRunner
 
-include("types.jl")
-include("construction.jl")
-include("accessors.jl")
-include("operations.jl")
-include("conversion.jl")
-include("rounding.jl")
-include("ranges.jl")
-include("format.jl")
-include("parse.jl")
-include("print.jl")
-
-end
+@run_package_tests

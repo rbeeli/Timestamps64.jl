@@ -114,42 +114,28 @@ function Timestamp64(
 end
 
 """
-Returns the current time as a `Timestamp64` object with nanoseconds precision
-in **local** time zone.
+Returns the current time as a `Timestamp64` object with nanosecond precision
+in **UTC** time zone.
+Equivalent to `now(Timestamp64, UTC)`.
 """
-@inline function Dates.now(::Type{Timestamp64})
-    ts = _clock_gettime()
-    tm = TmStruct(ts.tv_sec)
-    Timestamp64(
-        1900 + Int(tm.year), #
-        1 + Int(tm.month),
-        Int(tm.mday),
-        Int(tm.hour),
-        Int(tm.min),
-        Int(tm.sec);
-        nanoseconds=ts.tv_nsec,
-    )
-end
+@inline Dates.now(::Type{Timestamp64}) = Dates.now(Timestamp64, Dates.UTC)
 
 """
-Returns the current time as a `Timestamp64` object with nanoseconds precision
+Returns the current time as a `Timestamp64` object with nanosecond precision
 in **UTC** time zone.
 """
 @inline Dates.now(::Type{Timestamp64}, ::Type{Dates.UTC}) =
     Timestamp64(_to_unix_ns(_clock_gettime()))
 
 """
-Returns the current date as a `Timestamp64` object with nanoseconds precision
-in **local** time zone. The time part is set to `00:00:00.000000`.
+Returns the current date as a `Timestamp64` object with nanosecond precision
+in **UTC** time zone. The time part is set to `00:00:00.000000`.
+Equivalent to `today(Timestamp64, UTC)`.
 """
-@inline function Dates.today(::Type{Timestamp64})
-    ts = _clock_gettime()
-    tm = TmStruct(ts.tv_sec)
-    Timestamp64(1900 + Int(tm.year), 1 + Int(tm.month), Int(tm.mday))
-end
+@inline Dates.today(::Type{Timestamp64}) = Dates.today(Timestamp64, Dates.UTC)
 
 """
-Returns the current date as a `Timestamp64` object with nanoseconds precision
+Returns the current date as a `Timestamp64` object with nanosecond precision
 in **UTC** time zone. The time part is set to `00:00:00.000000`.
 """
 @inline Dates.today(::Type{Timestamp64}, ::Type{Dates.UTC}) =

@@ -50,16 +50,16 @@ using Dates
 # Create a timestamp
 ts = Timestamp64(2021, 12, 31, 23, 58, 59, nanoseconds=123456789)
 
-# Current timestamp in local time zone with nanosecond precision
+# Current timestamp in UTC with nanosecond precision
 now(Timestamp64)
 
-# Current timestamp in UTC with nanosecond precision
+# Current timestamp in UTC with nanosecond precision (explicit)
 now(Timestamp64, UTC)
 
-# Today's timestamp in local time zone (at midnight)
+# Today's timestamp in UTC at midnight
 today(Timestamp64)
 
-# Today's timestamp in UTC (at midnight)
+# Today's timestamp in UTC at midnight (explicit)
 today(Timestamp64, UTC)
 
 # Convert from various ISO 8601 string formats
