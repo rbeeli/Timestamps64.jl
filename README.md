@@ -1,6 +1,7 @@
 # Timestamps64.jl
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/rbeeli/Timestamps64.jl/blob/main/LICENSE)
+[![CI](https://github.com/rbeeli/Timestamps64.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/rbeeli/Timestamps64.jl/actions/workflows/CI.yml)
 ![Maintenance](https://img.shields.io/maintenance/yes/2025)
 [![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://rbeeli.github.io/Timestamps64.jl/stable/)
 [![Dev Documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://rbeeli.github.io/Timestamps64.jl/dev/)
