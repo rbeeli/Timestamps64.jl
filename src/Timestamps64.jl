@@ -4,9 +4,6 @@ module Timestamps64
     error("Timestamps64.jl only supports 64-bit systems")
 end
 
-@static if Sys.iswindows()
-    error("Timestamps64.jl is currently not supporting Windows systems")
-end
 
 export Timestamp64,
     ISOTimestamp64Format,

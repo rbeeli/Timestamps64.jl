@@ -20,11 +20,23 @@ with only the date component, the time component is set to 00:00:00.0
 @inline _to_date_ns(ts::TimeSpec) = 1_000_000_000 * (ts.tv_sec ÷ 86400) * 86400
 
 """
+Cross-platform wrapper for getting current time with nanosecond precision.
+Uses clock_gettime on Unix systems and Windows APIs on Windows.
+"""
+@inline function _clock_gettime()::TimeSpec
+    @static if Sys.iswindows()
+        return _clock_gettime_windows()
+    else
+        return _clock_gettime_unix()
+    end
+end
+
+"""
 Calls clock_gettime from time.h using the CLOCK_REALTIME clock.
 
 https://pubs.opengroup.org/onlinepubs/9699919799/functions/clock_gettime.html
 """
-function _clock_gettime()::TimeSpec
+@inline function _clock_gettime_unix()::TimeSpec
     ts = Ref(TimeSpec(0, 0))
     CLOCK_REALTIME = 0
     ret = ccall(:clock_gettime, Cint, (Cint, Ptr{TimeSpec}), CLOCK_REALTIME, ts)
@@ -32,6 +44,40 @@ function _clock_gettime()::TimeSpec
         error("clock_gettime failed")
     end
     ts[]
+end
+
+"""
+Windows implementation using GetSystemTimePreciseAsFileTime for high-precision UTC time.
+Falls back to GetSystemTimeAsFileTime if the precise version is not available.
+
+Returns time in the same TimeSpec format as the Unix version.
+"""
+@inline function _clock_gettime_windows()::TimeSpec
+    # FILETIME structure: 64-bit value representing 100-nanosecond intervals since January 1, 1601 UTC
+    filetime = Ref{UInt64}(0)
+
+    # Try to use GetSystemTimePreciseAsFileTime (Windows 8+)
+    # If it fails, fall back to GetSystemTimeAsFileTime
+    try
+        ccall((:GetSystemTimePreciseAsFileTime, "kernel32"), Cvoid, (Ptr{UInt64},), filetime)
+    catch
+        ccall((:GetSystemTimeAsFileTime, "kernel32"), Cvoid, (Ptr{UInt64},), filetime)
+    end
+
+    # Convert Windows FILETIME to Unix timestamp
+    # FILETIME epoch: January 1, 1601 UTC
+    # Unix epoch: January 1, 1970 UTC
+    # Difference: 11644473600 seconds = 116444736000000000 * 100ns intervals
+    windows_epoch_diff_100ns = 116444736000000000
+
+    # Convert to Unix timestamp in 100-nanosecond intervals
+    unix_100ns = filetime[] - windows_epoch_diff_100ns
+
+    # Convert to seconds and nanoseconds
+    tv_sec = unix_100ns ÷ 10_000_000  # 100ns intervals to seconds
+    tv_nsec = (unix_100ns % 10_000_000) * 100  # remaining 100ns intervals to nanoseconds
+
+    TimeSpec(tv_sec, tv_nsec)
 end
 
 # """
