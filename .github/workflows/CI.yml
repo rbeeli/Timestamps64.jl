@@ -33,8 +33,8 @@ jobs:
             os_display: macOS 12 Monterey (≥ 10.12)
           - os: macos-latest
             os_display: macOS latest
-          - os: windows-2019
-            os_display: Windows Server 2019 (Windows 10 baseline)
+          - os: windows-2022
+            os_display: Windows Server 2022 (Windows 10 baseline)
           - os: windows-latest
             os_display: Windows Server latest
     steps:
