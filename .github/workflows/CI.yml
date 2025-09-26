@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-    tags: "*"
   pull_request:
 
 jobs:
@@ -15,12 +14,12 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-20.04
           - ubuntu-22.04
+          - ubuntu-latest
           - macos-12
-          - macos-14
+          - macos-latest
           - windows-2019
-          - windows-2022
+          - windows-latest
         version:
           - "1.9"
           - "1.10"
@@ -28,16 +27,16 @@ jobs:
         include:
           - os: ubuntu-20.04
             os_display: Ubuntu 20.04 (minimum supported)
-          - os: ubuntu-22.04
-            os_display: Ubuntu 22.04 LTS
+          - os: ubuntu-latest
+            os_display: Ubuntu latest
           - os: macos-12
             os_display: macOS 12 Monterey (≥ 10.12)
-          - os: macos-14
-            os_display: macOS 14 Sonoma
+          - os: macos-latest
+            os_display: macOS latest
           - os: windows-2019
             os_display: Windows Server 2019 (Windows 10 baseline)
-          - os: windows-2022
-            os_display: Windows Server 2022 (Docker-compatible)
+          - os: windows-latest
+            os_display: Windows Server latest
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2

@@ -73,8 +73,12 @@ end
     using Dates
     using Timestamps64
 
+    # Julia 1.11 rounds up, but 1.9/1.10 previously truncated down.
+    # The rounding behavior was changed/fixed in Julia 1.11.
+    expected_ms = VERSION >= v"1.11" ? 855 : 854
+
     ts = Timestamp64(typemax(Int64))
-    @test DateTime(ts) == DateTime(2262, 4, 11, 23, 47, 16, 855)
+    @test DateTime(ts) == DateTime(2262, 4, 11, 23, 47, 16, expected_ms)
     @test ts.ts == typemax(Int64)
 end
 
