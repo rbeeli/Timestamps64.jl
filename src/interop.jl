@@ -20,18 +20,46 @@ with only the date component, the time component is set to 00:00:00.0
 @inline _to_date_ns(ts::TimeSpec) = 1_000_000_000 * (ts.tv_sec ÷ 86400) * 86400
 
 """
-Calls clock_gettime from time.h using the CLOCK_REALTIME clock.
-
-https://pubs.opengroup.org/onlinepubs/9699919799/functions/clock_gettime.html
+Calls into the operating system to obtain the current time with nanosecond precision.
 """
-function _clock_gettime()::TimeSpec
-    ts = Ref(TimeSpec(0, 0))
-    CLOCK_REALTIME = 0
-    ret = ccall(:clock_gettime, Cint, (Cint, Ptr{TimeSpec}), CLOCK_REALTIME, ts)
-    if ret != 0
-        error("clock_gettime failed")
+@inline function _clock_gettime()::TimeSpec
+    @static if Sys.iswindows()
+        _clock_gettime_windows()
+    else
+        _clock_gettime_posix()
     end
-    ts[]
+end
+
+@static if !Sys.iswindows()
+    """
+    Calls clock_gettime from time.h using the CLOCK_REALTIME clock.
+
+    https://pubs.opengroup.org/onlinepubs/9699919799/functions/clock_gettime.html
+    """
+    function _clock_gettime_posix()::TimeSpec
+        ts = Ref(TimeSpec(0, 0))
+        CLOCK_REALTIME = 0
+        ret = ccall(:clock_gettime, Cint, (Cint, Ptr{TimeSpec}), CLOCK_REALTIME, ts)
+        if ret != 0
+            error("clock_gettime failed")
+        end
+        ts[]
+    end
+end
+
+@static if Sys.iswindows()
+    const _WINDOWS_FILETIME_EPOCH_OFFSET_100NS = UInt64(116_444_736_000_000_000)
+
+    @inline function _clock_gettime_windows()::TimeSpec
+        ft = Ref{UInt64}(0)
+        ccall((:GetSystemTimePreciseAsFileTime, "kernel32"), stdcall, Cvoid, (Ref{UInt64},), ft)
+        filetime = ft[]
+        delta = Int128(filetime) - Int128(_WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
+        nanoseconds = delta * 100
+        seconds = nanoseconds ÷ 1_000_000_000
+        subseconds = nanoseconds % 1_000_000_000
+        TimeSpec(Int64(seconds), Int64(subseconds))
+    end
 end
 
 # """

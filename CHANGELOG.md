@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.7.0] – 2025‑09‑26
+
+### Added
+
+- Native Windows 64-bit support using the Win32 `GetSystemTimePreciseAsFileTime` API.
+
+### Changed
+
+- Continuous integration now runs the package test suite on Linux, macOS, and Windows runners.
+- Documentation updated to reflect Windows platform support.
+
 ## [0.6.0] – 2025‑09-25
 
 ### Breaking ⚠️

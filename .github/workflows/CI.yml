@@ -8,6 +8,28 @@ on:
   pull_request:
 
 jobs:
+  test:
+    name: Tests (julia ${{ matrix.version }} – ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - macos-13
+          - windows-latest
+        version:
+          - "1.9"
+          - "1.10"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ matrix.version }}
+          show-versioninfo: true
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1
+
   docs:
     name: Documentation
     permissions:

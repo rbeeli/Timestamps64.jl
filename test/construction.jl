@@ -155,3 +155,35 @@ end
     dt = Date(now(UTC))
     @test DateTime(ts) == dt
 end
+
+@static if Sys.iswindows()
+    @testitem "Construction: Windows FILETIME conversion" begin
+        using Dates
+        using Timestamps64
+
+        epoch_filetime = UInt64(116_444_736_000_000_000)
+        filetime = epoch_filetime
+        delta = Int128(filetime) - Int128(Timestamps64._WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
+        nanoseconds = delta * 100
+        seconds = nanoseconds ÷ 1_000_000_000
+        subseconds = nanoseconds % 1_000_000_000
+        @test seconds == 0
+        @test subseconds == 0
+
+        filetime = epoch_filetime + 10_000_000
+        delta = Int128(filetime) - Int128(Timestamps64._WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
+        nanoseconds = delta * 100
+        seconds = nanoseconds ÷ 1_000_000_000
+        subseconds = nanoseconds % 1_000_000_000
+        @test seconds == 1
+        @test subseconds == 0
+
+        filetime = filetime + 1_234
+        delta = Int128(filetime) - Int128(Timestamps64._WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
+        nanoseconds = delta * 100
+        seconds = nanoseconds ÷ 1_000_000_000
+        subseconds = nanoseconds % 1_000_000_000
+        @test seconds == 1
+        @test subseconds == 123_400
+    end
+end
