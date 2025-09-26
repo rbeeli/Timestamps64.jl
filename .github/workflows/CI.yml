@@ -25,8 +25,8 @@ jobs:
           - "1.10"
           - "1.11"
         include:
-          - os: ubuntu-20.04
-            os_display: Ubuntu 20.04 (minimum supported)
+          - os: ubuntu-22.04
+            os_display: Ubuntu 22.04 (minimum supported)
           - os: ubuntu-latest
             os_display: Ubuntu latest
           - os: macos-12
