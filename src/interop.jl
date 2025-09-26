@@ -50,13 +50,16 @@ end
 @static if Sys.iswindows()
     const _WINDOWS_FILETIME_EPOCH_OFFSET_100NS = UInt64(116_444_736_000_000_000)
 
+    @inline function _filetime_to_timespec(filetime::UInt64)::TimeSpec
+        delta100ns = Int128(filetime) - Int128(_WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
+        seconds, subsec100ns = Base.fldmod(delta100ns, 10_000_000)
+        TimeSpec(Int64(seconds), Int64(subsec100ns) * 100)
+    end
+
     @inline function _clock_gettime_windows()::TimeSpec
         ft = Ref{UInt64}(0)
         ccall((:GetSystemTimePreciseAsFileTime, "kernel32"), stdcall, Cvoid, (Ref{UInt64},), ft)
-        filetime = ft[]
-        delta100ns = Int64(filetime) - Int64(_WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
-        seconds, subsec100ns = Base.fldmod(delta100ns, 10_000_000)
-        TimeSpec(seconds, Int64(subsec100ns) * 100)
+        _filetime_to_timespec(ft[])
     end
 end
 
