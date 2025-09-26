@@ -9,7 +9,6 @@ Pull requests and issues are welcome.
 - Check Base.trunc support
 - Create docs site, also on GitHub pages
 
-
 ## Building documentation
 
 The documentation is built using [Documenter.jl](https://documenter.juliadocs.org/stable/).

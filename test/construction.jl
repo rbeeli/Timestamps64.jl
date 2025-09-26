@@ -155,3 +155,69 @@ end
     dt = Date(now(UTC))
     @test DateTime(ts) == dt
 end
+
+@static if Sys.iswindows()
+    @testitem "Construction: Windows FILETIME helper" begin
+        using Dates
+        using Timestamps64
+
+        epoch = Timestamps64._WINDOWS_FILETIME_EPOCH_OFFSET_100NS
+
+        ts = Timestamps64._filetime_to_timespec(epoch)
+        @test ts.tv_sec == 0
+        @test ts.tv_nsec == 0
+
+        ts = Timestamps64._filetime_to_timespec(epoch + UInt64(10_000_000 + 1_234))
+        @test ts.tv_sec == 1
+        @test ts.tv_nsec == 123_400
+
+        ts = Timestamps64._filetime_to_timespec(epoch - UInt64(5_000_000))
+        @test ts.tv_sec == -1
+        @test ts.tv_nsec == 500_000_000
+    end
+
+    @testitem "Construction: Windows FILETIME to Timestamp64" begin
+        using Dates
+        using Timestamps64
+
+        epoch = Timestamps64._WINDOWS_FILETIME_EPOCH_OFFSET_100NS
+
+        tspec = Timestamps64._filetime_to_timespec(epoch + UInt64(42 * 10_000_000))
+        ts = Timestamp64(Timestamps64._to_unix_ns(tspec))
+        @test DateTime(ts) == DateTime(1970, 1, 1) + Dates.Second(42)
+
+        tspec = Timestamps64._filetime_to_timespec(epoch - UInt64(3 * 10_000_000))
+        ts = Timestamp64(Timestamps64._to_unix_ns(tspec))
+        @test DateTime(ts) == DateTime(1969, 12, 31, 23, 59, 57)
+    end
+
+    @testitem "Construction: Windows FILETIME conversion" begin
+        using Dates
+        using Timestamps64
+
+        epoch_filetime = UInt64(116_444_736_000_000_000)
+        filetime = epoch_filetime
+        delta = Int128(filetime) - Int128(Timestamps64._WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
+        nanoseconds = delta * 100
+        seconds = nanoseconds ÷ 1_000_000_000
+        subseconds = nanoseconds % 1_000_000_000
+        @test seconds == 0
+        @test subseconds == 0
+
+        filetime = epoch_filetime + 10_000_000
+        delta = Int128(filetime) - Int128(Timestamps64._WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
+        nanoseconds = delta * 100
+        seconds = nanoseconds ÷ 1_000_000_000
+        subseconds = nanoseconds % 1_000_000_000
+        @test seconds == 1
+        @test subseconds == 0
+
+        filetime = filetime + 1_234
+        delta = Int128(filetime) - Int128(Timestamps64._WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
+        nanoseconds = delta * 100
+        seconds = nanoseconds ÷ 1_000_000_000
+        subseconds = nanoseconds % 1_000_000_000
+        @test seconds == 1
+        @test subseconds == 123_400
+    end
+end

@@ -8,6 +8,45 @@ on:
   pull_request:
 
 jobs:
+  test:
+    name: Tests (julia ${{ matrix.version }} - ${{ matrix.os_display || matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-20.04
+          - ubuntu-22.04
+          - macos-12
+          - macos-14
+          - windows-2019
+          - windows-2022
+        version:
+          - "1.9"
+          - "1.10"
+          - "1.11"
+        include:
+          - os: ubuntu-20.04
+            os_display: Ubuntu 20.04 (minimum supported)
+          - os: ubuntu-22.04
+            os_display: Ubuntu 22.04 LTS
+          - os: macos-12
+            os_display: macOS 12 Monterey (≥ 10.12)
+          - os: macos-14
+            os_display: macOS 14 Sonoma
+          - os: windows-2019
+            os_display: Windows Server 2019 (Windows 10 baseline)
+          - os: windows-2022
+            os_display: Windows Server 2022 (Docker-compatible)
+    steps:
+      - uses: actions/checkout@v4
+      - uses: julia-actions/setup-julia@v2
+        with:
+          version: ${{ matrix.version }}
+          show-versioninfo: true
+      - uses: julia-actions/julia-buildpkg@v1
+      - uses: julia-actions/julia-runtest@v1
+
   docs:
     name: Documentation
     permissions:
@@ -15,7 +54,7 @@ jobs:
       contents: write
       pull-requests: read
       statuses: write
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: julia-actions/setup-julia@v2
