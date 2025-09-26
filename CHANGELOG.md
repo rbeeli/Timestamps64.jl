@@ -8,8 +8,7 @@
 
 ### Changed
 
-- Continuous integration now runs the package test suite on Linux, macOS, and Windows runners.
-- Documentation updated to reflect Windows platform support.
+- CI GitHub workflows to automate testing on Linux, macOS, and Windows
 
 ## [0.6.0] – 2025‑09-25
 
