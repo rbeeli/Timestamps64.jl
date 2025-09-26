@@ -31,9 +31,14 @@ This package is supported on the following platforms (64-bit only):
 - macOS Sierra 10.12 and later (needs `clock_gettime` support)
 - Windows 10 / Windows Server 2016 and later (requires `GetSystemTimePreciseAsFileTime`)
 
+!!! note "Windows clock resolution"
+
+  Windows exposes the wall-clock in 100-nanosecond ticks via `GetSystemTimePreciseAsFileTime`, so while `Timestamp64` reports nanosecond values, the effective resolution on Windows remains 100 ns (sometimes coarser depending on hardware).
+
 Examples of not supported platforms:
 
 - Any 32-bit system
+- Windows versions earlier than 10 (e.g., Windows 8.1)
 - Older macOS versions before 10.12
 
 ## Background

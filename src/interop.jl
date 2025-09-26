@@ -54,11 +54,9 @@ end
         ft = Ref{UInt64}(0)
         ccall((:GetSystemTimePreciseAsFileTime, "kernel32"), stdcall, Cvoid, (Ref{UInt64},), ft)
         filetime = ft[]
-        delta = Int128(filetime) - Int128(_WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
-        nanoseconds = delta * 100
-        seconds = nanoseconds ÷ 1_000_000_000
-        subseconds = nanoseconds % 1_000_000_000
-        TimeSpec(Int64(seconds), Int64(subseconds))
+        delta100ns = Int64(filetime) - Int64(_WINDOWS_FILETIME_EPOCH_OFFSET_100NS)
+        seconds, subsec100ns = Base.fldmod(delta100ns, 10_000_000)
+        TimeSpec(seconds, Int64(subsec100ns) * 100)
     end
 end
 
