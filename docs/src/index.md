@@ -3,7 +3,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://github.com/rbeeli/Timestamps64.jl/blob/main/LICENSE)
 ![Maintenance](https://img.shields.io/maintenance/yes/2025)
 [![Stable Documentation](https://img.shields.io/badge/docs-stable-blue.svg)](https://rbeeli.github.io/Timestamps64.jl/stable/)
-[![Dev Documentation](https://img.shields.io/badge/docs-dev-blue.svg)](https://rbeeli.github.io/Timestamps64.jl/dev/)
 
 This package provides an efficient `Timestamp64` datetime type with nanosecond precision.
 It is a wrapper around a single `Int64` value (8 bytes) that represents the number of nanoseconds since the UNIX epoch. Benchmarks show that common date/time operations are as fast as Julia's built-in `DateTime` type, or even significantly faster in some cases (see below).
