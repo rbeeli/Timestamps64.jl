@@ -27,7 +27,7 @@ Timestamp64(&quot;2021-01-01T00:00:00.000001Z&quot;) # 1 microsecond
 Timestamp64(&quot;2021-01-01T00:00:00.000000001&quot;) # 1 nanosecond
 Timestamp64(&quot;2021-01-01T00:00:00.000000001Z&quot;) # 1 nanosecond
 
-# Base.parse is also supported (only ISO 8601 / RFC 3999 up to nanoseconds formats)
+# Base.parse is also supported (only ISO 8601 / RFC 3339 up to nanoseconds formats)
 parse(Timestamp64, &quot;2021-01-01T00:00:00.000000001Z&quot;, Dates.ISODateTimeFormat)
 parse(Timestamp64, &quot;2021-01-01T00:00:00&quot;)
 parse(Timestamp64, &quot;2021-01-01T00:00:00.001&quot;)
@@ -91,7 +91,7 @@ Dates.format(ts, Dates.ISODateTimeFormat)
 Dates.format(ts, ISOTimestamp64Format)
 
 
-## Arithmetics
+## Arithmetic
 
 # Add period
 ts2 = ts + Millisecond(100)
@@ -308,4 +308,4 @@ unix_secs = 1609459201; # 2021-01-01T00:00:01.000000000
   1.539 ns (0 allocations: 0 bytes)
 
 julia&gt; @btime unix2datetime($unix_secs);
-  1.570 ns (0 allocations: 0 bytes)</code></pre><h2 id="Bug-reports-and-feature-requests"><a class="docs-heading-anchor" href="#Bug-reports-and-feature-requests">Bug reports and feature requests</a><a id="Bug-reports-and-feature-requests-1"></a><a class="docs-heading-anchor-permalink" href="#Bug-reports-and-feature-requests" title="Permalink"></a></h2><p>Please report any issues via the <a href="https://github.com/rbeeli/Timestamps64.jl/issues">GitHub issue tracker</a>.</p></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Saturday 27 September 2025 00:06">Saturday 27 September 2025</span>. Using Julia version 1.11.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+  1.570 ns (0 allocations: 0 bytes)</code></pre><h2 id="Bug-reports-and-feature-requests"><a class="docs-heading-anchor" href="#Bug-reports-and-feature-requests">Bug reports and feature requests</a><a id="Bug-reports-and-feature-requests-1"></a><a class="docs-heading-anchor-permalink" href="#Bug-reports-and-feature-requests" title="Permalink"></a></h2><p>Please report any issues via the <a href="https://github.com/rbeeli/Timestamps64.jl/issues">GitHub issue tracker</a>.</p></article><nav class="docs-footer"><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.14.1 on <span class="colophon-date" title="Saturday 27 September 2025 00:27">Saturday 27 September 2025</span>. Using Julia version 1.11.7.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
