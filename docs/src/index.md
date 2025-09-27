@@ -32,7 +32,7 @@ This package is supported on the following platforms (64-bit only):
 
 !!! note "Windows clock resolution"
 
-  Windows exposes the wall-clock in 100-nanosecond ticks via `GetSystemTimePreciseAsFileTime`, so while `Timestamp64` reports nanosecond values, the effective resolution on Windows remains 100 ns (sometimes coarser depending on hardware).
+    Windows exposes the wall-clock in 100-nanosecond ticks via `GetSystemTimePreciseAsFileTime`, so while `Timestamp64` reports nanosecond values, the effective resolution on Windows remains 100 ns (sometimes coarser depending on hardware).
 
 Examples of not supported platforms:
 
