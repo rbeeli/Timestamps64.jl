@@ -5,9 +5,6 @@
 ### Added
 
 - Native Windows 64-bit support using the Win32 `GetSystemTimePreciseAsFileTime` API.
-
-### Changed
-
 - CI GitHub workflows to automate testing on Linux, macOS, and Windows
 
 ## [0.6.0] – 2025‑09-25
